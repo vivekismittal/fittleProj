@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../resources/app_exception.dart';
 import 'base_api_services.dart';
 
 class NetworkApiService extends BaseApiServices {
-  static const _authToken = "Token 4b7842c6b2d92924c2d3fa2e4f483989458205d2";
-  static const _searchAuthToken =
-      "Token cf1b4c3e9cbd26e88096ec385fff6607d761967d";
+  static final _authToken = dotenv.env["AUTHTOKEN"] ?? "";
+  static final _searchAuthToken = dotenv.env["SEARCHAUTHTOKEN"] ?? "";
 
   //For Post Api's
   @override

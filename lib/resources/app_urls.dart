@@ -1,37 +1,38 @@
-class AppUrls {
-  static const baseUrl = "https://94fa-103-95-83-105.ngrok-free.app";
-  static const searchBaseUrl = "https://5b7c-103-95-83-220.ngrok-free.app";
 
-  static const String sendOtpUrl = "$baseUrl/user/api/send-otp/";
-  static const String verifyOtpUrl = "$baseUrl/user/api/verify-otp/";
-  static const String resendOtpUrl = "$baseUrl/user/api/resend-otp/";
-  static const String createUpdateProfileUrl =
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+abstract class AppUrls {
+
+   static final  String? baseUrl = dotenv.env["BASEURL"];
+  static final String? searchBaseUrl = dotenv.env["SEARCHBASEURL"];
+
+  static final String sendOtpUrl = "$baseUrl/user/api/send-otp/";
+  static final String verifyOtpUrl = "$baseUrl/user/api/verify-otp/";
+  static final String resendOtpUrl = "$baseUrl/user/api/resend-otp/";
+  static final String createUpdateProfileUrl =
       "$baseUrl/user/api/create-update-user-profile/";
-  static const String getHomeDashboardDataUrl =
+  static final String getHomeDashboardDataUrl =
       "$baseUrl/user/api/get-dashboard/";
-  static const String getCategoryWiseFoodDataUrl =
+  static final String getCategoryWiseFoodDataUrl =
       "$baseUrl/user/api/get-category-data/";
-  static const String searchFoodUrl = "$searchBaseUrl/search/food-item/";
-  static const String getFrequentFoodUrl =
+  static final String searchFoodUrl = "$searchBaseUrl/search/food-item/";
+  static final String getFrequentFoodUrl =
       "$searchBaseUrl/search/get-frequent/";
-  static const String foodDetailUrl = "$searchBaseUrl/search/food-page/";
-  static const String foodInsightUrl = "$baseUrl/user/api/get-insights/";
-  static const String getWorkoutTrackDataUrl =
+  static final String foodDetailUrl = "$searchBaseUrl/search/food-page/";
+  static final String foodInsightUrl = "$baseUrl/user/api/get-insights/";
+  static final String getWorkoutTrackDataUrl =
       "$baseUrl/user/api/get-exercise-data/";
-  static const String searchWorkoutUrl = "$searchBaseUrl/search/exercise-item/";
-  static const String getFrequentWorkoutUrl =
+  static final String searchWorkoutUrl = "$searchBaseUrl/search/exercise-item/";
+  static final String getFrequentWorkoutUrl =
       "$searchBaseUrl/search/get-frequent-exercise/";
-  static const String getWorkoutDetailDataUrl =
+  static final String getWorkoutDetailDataUrl =
       "$searchBaseUrl/search/exercise-page/";
-  static const updateWaterIntakeUrl = "$baseUrl/user/api/water-update/";
-  static const updateWorkoutTrackUrl =
+  static final updateWaterIntakeUrl = "$baseUrl/user/api/water-update/";
+  static final updateWorkoutTrackUrl =
       "$baseUrl/user/api/update-exercise-data/";
-  static const getUserProfileData = "$baseUrl/user/api/get-user-profile/";
-  static const getProgressData = "$baseUrl/user/api/get-progress-bar/";
-  static const updateFoodTrackUrl= "$baseUrl/user/api/update-category-data/";
-  static const copyMoveFoodTrackUrl= "$baseUrl/user/api/copy-move-category-data/";
-  static const deleteFoodTrackUrl= "$baseUrl/user/api/delete-category-food/";
-  static const reportIssuesUrl = "$baseUrl/user/api/report-issue/";
-  
-
+  static final getUserProfileData = "$baseUrl/user/api/get-user-profile/";
+  static final getProgressData = "$baseUrl/user/api/get-progress-bar/";
+  static final updateFoodTrackUrl= "$baseUrl/user/api/update-category-data/";
+  static final copyMoveFoodTrackUrl= "$baseUrl/user/api/copy-move-category-data/";
+  static final deleteFoodTrackUrl= "$baseUrl/user/api/delete-category-food/";
+  static final reportIssuesUrl = "$baseUrl/user/api/report-issue/";
 }

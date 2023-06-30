@@ -19,8 +19,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/loader_bloc.dart';
 import 'bloc/observer/bloc_observer.dart';
 import 'screens/workout/workout_detail_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: "assets/.env");
+
   Bloc.observer = AppBlocObserver();
   runApp(
     MultiBlocProvider(

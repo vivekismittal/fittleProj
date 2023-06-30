@@ -43,6 +43,7 @@ dependencies:
   lottie: ^2.3.2
   intl: ^0.18.1
   fl_chart: ^0.63.0
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
     - assets/svg/
     - assets/lotties/
     - assets/png/
+    - assets/.env
 
   # assets:
   #   - images/a_dot_burr.jpeg
