@@ -133,9 +133,9 @@ class GenderSelectionModel extends ProfilePageModel {
 }
 
 class HowOldModel extends ProfilePageModel {
-  int selectedMonth = DateTime.now().month;
-  int selectedDay = DateTime.now().day;
-  int selectedYear = DateTime.now().year;
+  int selectedMonth = 8;
+  int selectedDay = 10;
+  int selectedYear = 2000;
   static const List<String> totalMonths = [
     "January",
     "February",

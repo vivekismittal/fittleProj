@@ -59,10 +59,3 @@ class WorkoutDetailErrorState extends WorkoutTrackingState {
 //   PostUpdatedWorkoutTrackState(this.message, this.updatedWorkoutTrackData);
 // }
 
-class PostUpdatedWorkoutErrorState extends WorkoutTrackingState {
-  final String message;
-
-  PostUpdatedWorkoutErrorState(this.message);
-}
-
-class PostUpdatedWorkoutLoadingState extends WorkoutTrackingState {}

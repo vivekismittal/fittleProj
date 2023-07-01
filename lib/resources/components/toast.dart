@@ -1,4 +1,5 @@
 import 'package:fittle_ai/resources/app_color.dart';
+import 'package:fittle_ai/resources/components/texts/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class Toast extends StatelessWidget {
@@ -13,15 +14,12 @@ class Toast extends StatelessWidget {
       child: Material(
         elevation: 4.0,
         borderRadius: BorderRadius.circular(16.0),
-        color: AppColor.whiteColor.withOpacity(0.5),
+        color: AppColor.lightBlackColor.withOpacity(0.5),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
           child: Text(
             message,
-            style: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.black,
-            ),
+            style: m12_600WhiteTextStyle.copyWith(fontSize: 16),
           ),
         ),
       ),

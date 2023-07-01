@@ -1,3 +1,4 @@
+import 'package:fittle_ai/resources/components/texts/custom_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../resources/app_color.dart';
@@ -19,22 +20,67 @@ class CountryDropDown extends StatefulWidget {
 
 class _CountryDropDownState extends State<CountryDropDown> {
   late String _countryCode;
-  int value = 0;
+  late Country country;
+  int? value = 0;
   @override
   void initState() {
     // TODO: implement initState
     _countryCode = widget.countryCode;
+    country = countries.first;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      
-      decoration: const InputDecoration(contentPadding: EdgeInsets.all(0)),
+    return
+        //  Container(
+        //   height: 48,
+        //   decoration: BoxDecoration(
+        //       color: AppColor.whiteColor.withOpacity(0.3),
+        //       borderRadius: BorderRadius.circular(3)),
+        //   child: Row(
+        //     children: [
+        //       Padding(
+        //           padding: const EdgeInsets.only(left: 4),
+        //           child: Text(
+        //             country.flag,
+        //             style: const TextStyle(fontSize: 24),
+        //           )
+        //           // icon,
+        //           ),
+        //       Expanded(
+        //         child: Text(
+        //           " ${country.dialCode}",
+        //           style: p12_500WhiteTextStyle,
+        //           overflow: TextOverflow.ellipsis,
+        //         ),
+        //       ),
+        //       PopupMenuButton(
+        //           position: PopupMenuPosition.under,
+        //           color: AppColor.progressBarColor,
+        //           child: const Icon(
+        //             Icons.arrow_drop_down_outlined,
+        //             color: AppColor.whiteColor,
+        //           ),
+        //           onSelected: (val) {
+        //             _countryCode = countries[val].dialCode;
+        //             country = countries[val];
+        //             setState(() => value = val);
+        //             widget.onChanged(_countryCode);
+        //           },
+        //           itemBuilder: (ctx) => List.generate(countries.length,
+        //               (index) => _buildPopupMenuItem(countries[index], index))),
+        //     ],
+        //   ),
+        // );
+
+        DropdownButtonFormField(
+      decoration: const InputDecoration(
+        contentPadding: EdgeInsets.all(0),
+      ),
       isExpanded: true,
       icon: const Icon(Icons.arrow_drop_down, size: 20),
-      dropdownColor: widget.color.withOpacity(.2),
+      dropdownColor: AppColor.progressBarColor,
       iconEnabledColor: widget.color,
       alignment: Alignment.bottomCenter,
       menuMaxHeight: 400,
@@ -47,6 +93,13 @@ class _CountryDropDownState extends State<CountryDropDown> {
         setState(() => value = val);
         widget.onChanged(_countryCode);
       },
+
+      // onTap: () {
+      //   setState(() {
+      //     value = 0;
+      //   });
+      // },
+
       value: value,
     );
   }
@@ -80,5 +133,29 @@ class _CountryDropDownState extends State<CountryDropDown> {
         ],
       ),
     );
+  }
+
+  PopupMenuItem _buildPopupMenuItem(Country country, int index) {
+    return PopupMenuItem(
+        value: index,
+        child: Row(
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Text(
+                  country.flag,
+                  style: const TextStyle(fontSize: 24),
+                )
+                // icon,
+                ),
+            Expanded(
+              child: Text(
+                " ${country.dialCode}",
+                style: p12_500WhiteTextStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ));
   }
 }

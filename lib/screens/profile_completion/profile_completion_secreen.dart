@@ -56,13 +56,15 @@ class ProfileCompletionBody extends StatelessWidget {
                 ScreenPaths.profileCompletionScreenPath.name));
             var nextIndex =
                 (profileState as ProfileCreatedUpdatedState).nextPageIndex;
-            if (nextIndex <= pageLength - 1) {
-              currentIndex = nextIndex;
-            } else {
+            if (profileState.isProfileComplete) {
               context.read<NavigationBloc>().add(
                   ScreenPushedAndRemoveUntilEvent(
                       ScreenPaths.homeDashBoardPath.name, ""));
+              break;
+            } else if (nextIndex <= pageLength - 1) {
+              currentIndex = nextIndex;
             }
+
             break;
           case ProfileLoadingState:
             context.read<LoaderBloc>().add(EnabledLoadingEvent(
@@ -177,7 +179,8 @@ class ProfileCompletionBody extends StatelessWidget {
                       isFilled: true,
                       onPressed: () {
                         addCreateProfileEvent(currentIndex, addEventFunc,
-                            isProfileFinished: currentIndex >= pageLength);
+                            isProfileFinished:
+                                !(currentIndex < pageLength - 1));
                       },
                     ),
                   ),

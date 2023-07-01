@@ -70,14 +70,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             createUpdateProfileResponse.nextProfileIndex != null) {
           await _sharedRepo
               .saveProfileId(createUpdateProfileResponse.profileId!);
+          await _sharedRepo.saveProfileCompletionStatus(true);
           emit(ProfileCreatedUpdatedState(
             createUpdateProfileResponse.nextProfileIndex! - 1,
             event.profileData,
+            event.isProfileFinished,
           ));
-          await _sharedRepo.saveProfileCompletionStatus(true);
         }
       }
     } catch (e, s) {
+      print("errr");
       addError(e, s);
       emit(ProfileErrorState("$e"));
     }

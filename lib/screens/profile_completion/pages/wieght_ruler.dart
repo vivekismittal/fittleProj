@@ -47,13 +47,13 @@ class _WeightRulerPageState extends State<WeightRulerPage> {
           ),
         ),
         Transform.rotate(
-          angle: pi / 2,
+          angle: -pi / 2,
           child: Container(
-            height: 260,
+            height: 280,
             width: 144,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              color: AppColor.callToActionColor,
+              color: AppColor.progressBarColor,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,

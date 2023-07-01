@@ -60,4 +60,15 @@ class WorkoutTrackRepo {
       rethrow;
     }
   }
+
+  Future<String> deleteWorkoutTrack(
+      dynamic data) async {
+    dynamic response = await _apiServices
+        .postApiResponse(AppUrls.deleteWorkoutTrackUrl, data);
+    try {
+      return response["message"];
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

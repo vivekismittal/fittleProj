@@ -7,7 +7,8 @@ class ProfileInitialState extends ProfileState {}
 class ProfileCreatedUpdatedState extends ProfileState {
   final int nextPageIndex;
 final ProfileData? profileData;
-  ProfileCreatedUpdatedState(this.nextPageIndex, this.profileData);
+final bool isProfileComplete;
+  ProfileCreatedUpdatedState(this.nextPageIndex, this.profileData, this.isProfileComplete);
 }
 
 class ProfileLoadingState extends ProfileState {}

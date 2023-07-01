@@ -28,8 +28,8 @@ class Constant {
   static const String planPng = "assets/png/plan.png";
   static const String insightSvg = "assets/svg/insight.svg";
   static const String dissapointedEmojiSvg = "assets/svg/disappointed-face.svg";
-  static const String dissapointedEmojiPng = "assets/png/emoji-disappointed.png";
-
+  static const String dissapointedEmojiPng =
+      "assets/png/emoji-disappointed.png";
 
   ///lotties
   static const String loaderLottie = "assets/lotties/app-loader.json";
@@ -82,7 +82,10 @@ class Constant {
   ];
 }
 
-enum Options { delete, move, copy, report }
+enum FoodTrackingOptions { delete, move, copy, report }
+
+enum WeightTrackingOptions { edit, delete }
+
 
 // def calculate_age(dob):
 //     today = date.today()

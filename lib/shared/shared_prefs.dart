@@ -20,4 +20,9 @@ class SharedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(key);
   }
+   Future<bool?> clear() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.clear();
+  }
+
 }

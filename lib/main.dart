@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Fittle.ai',
       theme: AppTheme().themeData,
       routes: {
         '/': (context) => const SplashScreen(),

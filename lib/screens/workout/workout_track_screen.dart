@@ -57,27 +57,15 @@ class WorkoutTrackingBody extends StatelessWidget {
       onTryAgain: () => fetchWorkoutTrackData(context, selectedDate),
       child: BlocConsumer<WorkoutTrackBloc, WorkoutTrackingState>(
         buildWhen: (previous, current) =>
-            current is WorkoutTrackingFetchedState ||
-            current is WorkoutTrackingErrorState,
+            current is WorkoutTrackingFetchedState ,
         listener: (context, state) {
           switch (state.runtimeType) {
             case WorkoutTrackingErrorState:
               context.read<LoaderBloc>().add(DisabledLoadingEvent(
                   ScreenPaths.workoutTrackScreenPath.name));
               Toast.show(context, (state as WorkoutTrackingErrorState).message);
-
-              break;
-            case PostUpdatedWorkoutErrorState:
-              context.read<LoaderBloc>().add(DisabledLoadingEvent(
-                  ScreenPaths.workoutTrackScreenPath.name));
-              Toast.show(context, (state as WorkoutTrackingErrorState).message);
-
               break;
             case WorkoutTrackingLoadingState:
-              context.read<LoaderBloc>().add(
-                  EnabledLoadingEvent(ScreenPaths.workoutTrackScreenPath.name));
-              break;
-            case PostUpdatedWorkoutLoadingState:
               context.read<LoaderBloc>().add(
                   EnabledLoadingEvent(ScreenPaths.workoutTrackScreenPath.name));
               break;
@@ -181,7 +169,8 @@ class WorkoutTrackingBody extends StatelessWidget {
                                     const Spacer(),
                                     InkWell(
                                       onTap: () {
-                                        asyncNavigate(context, setState);
+                                        asyncNavigateToSearch(
+                                            context, setState);
                                       },
                                       child: const SizedBox(
                                         height: 20,
@@ -201,18 +190,41 @@ class WorkoutTrackingBody extends StatelessWidget {
                                 ),
                               );
                             }
+                            index = index - 1;
                             var data =
-                                workoutTrackData?.userExerciseData?[index - 1];
+                                workoutTrackData?.userExerciseData?[index];
                             List<String> subTitles = [];
-                            data?.exerciseData?.forEach((key, value) {
-                              subTitles.add("$value $key");
-                            });
-
+                            // data?.exerciseData?.first((key, value) {
+                            //   subTitles.add("$value $key");
+                            // });
+                            subTitles.add(
+                                "${data?.exerciseData?.keys.first} : ${data?.exerciseData?.values.first}");
                             return WorkoutTrackTile(
-                                key: UniqueKey(),
-                                title: data?.exerciseName ?? "",
-                                subTitles: subTitles,
-                                id: data?.exerciseId ?? "");
+                              key: UniqueKey(),
+                              title: data?.exerciseName ?? "",
+                              subTitles: subTitles,
+                              id: data?.exerciseId ?? "",
+                              onPopUpButtonClicked: (optionIndex) {
+                                if (optionIndex ==
+                                    WeightTrackingOptions.edit.index) {
+                                  asyncNavigateToDetail(
+                                      context, setState, data);
+                                }
+                                if (optionIndex ==
+                                    WeightTrackingOptions.delete.index) {
+                                  var exerciseId = workoutTrackData
+                                      ?.userExerciseData?[index].exerciseId;
+                               
+                                  context.read<WorkoutTrackBloc>().add(
+                                      WorkoutTrackDeleteEvent(
+                                          workoutTrackData ??
+                                              WorkoutTrackData(),
+                                          date:
+                                              "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
+                                          exerciseId: exerciseId ?? ""));
+                                }
+                              },
+                            );
                           },
                         ),
                       ),
@@ -264,20 +276,57 @@ class WorkoutTrackingBody extends StatelessWidget {
     );
   }
 
-  void asyncNavigate(
-      BuildContext context, void Function(void Function()) setState) async {
-    UserExerciseDatum? data = await Navigator.of(context)
-            .pushNamed(ScreenPaths.workoutSearchScreenPath.name)
-        as UserExerciseDatum?;
-    if (data != null &&
+  void asyncNavigateToSearch(
+    BuildContext context,
+    void Function(void Function()) setState,
+  ) async {
+    UserExerciseDatum? userExerciseData;
+    var data = await Navigator.of(context).pushNamed(
+      ScreenPaths.workoutSearchScreenPath.name,
+    );
+    if (data is UserExerciseDatum) {
+      userExerciseData = data;
+    }
+
+    if (userExerciseData != null &&
         !(workoutTrackData?.userExerciseData ?? []).any(
-          (element) => element.exerciseId == data.exerciseId,
+          (element) => element.exerciseId == userExerciseData!.exerciseId,
         )) {
-      workoutTrackData?.userExerciseData?.add(data);
+      workoutTrackData?.userExerciseData?.add(userExerciseData);
       isSaveBtnActive = true;
       setState(() {});
     }
-    
+  }
+
+  void asyncNavigateToDetail(
+      BuildContext context,
+      void Function(void Function()) setState,
+      UserExerciseDatum? pushedData) async {
+    bool isForEdit = false;
+    UserExerciseDatum? userExerciseData;
+    var data = await Navigator.of(context).pushNamed(
+        ScreenPaths.workoutDetailScreenPath.name,
+        arguments: pushedData);
+    if (data is UserExerciseDatum) {
+      userExerciseData = data;
+    } else if (data is List) {
+      userExerciseData = data.first;
+      isForEdit = data[1];
+    }
+    print(isForEdit);
+    if (isForEdit &&
+        workoutTrackData?.userExerciseData != null &&
+        userExerciseData != null) {
+      workoutTrackData!.userExerciseData!.asMap().forEach((key, value) {
+        if (value.exerciseId == userExerciseData?.exerciseId) {
+          workoutTrackData!.userExerciseData?[key] = userExerciseData!;
+        }
+      });
+      isSaveBtnActive = true;
+      setState(
+        () {},
+      );
+    }
   }
 }
 
@@ -287,10 +336,12 @@ class WorkoutTrackTile extends StatelessWidget {
     required this.title,
     required this.subTitles,
     required this.id,
+    required this.onPopUpButtonClicked,
   });
   final String title;
   final List<String> subTitles;
   final String id;
+  final void Function(int) onPopUpButtonClicked;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -323,7 +374,32 @@ class WorkoutTrackTile extends StatelessWidget {
               ),
             ),
           ),
+          const Spacer(),
+          PopupMenuButton(
+            child: const Icon(
+              Icons.more_vert_outlined,
+              color: AppColor.lightBlackColor,
+            ),
+            onOpened: () {},
+            onSelected: (value) {
+              onPopUpButtonClicked(value);
+            },
+            itemBuilder: (ctx) => [
+              _buildPopupMenuItem('Edit', WeightTrackingOptions.edit.index),
+              _buildPopupMenuItem('Delete', WeightTrackingOptions.delete.index),
+            ],
+          )
         ],
+      ),
+    );
+  }
+
+  PopupMenuItem _buildPopupMenuItem(String title, int index) {
+    return PopupMenuItem(
+      value: index,
+      child: Text(
+        title,
+        style: p12_400BlackTextStyle,
       ),
     );
   }

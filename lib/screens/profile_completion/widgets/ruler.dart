@@ -76,7 +76,7 @@ class Ruler extends StatelessWidget {
                   child: FractionallySizedBox(
                     heightFactor: 1,
                     child: Transform.rotate(
-                      angle: isHorizontal ? -pi / 2 : 0,
+                      angle: isHorizontal ? pi / 2 : 0,
                       child: Text(
                         index % intervals == 0
                             ? "${((index * valueTransform / intervals) + min).toInt()}$suffix"

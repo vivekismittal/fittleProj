@@ -81,11 +81,11 @@ class _FoodTrackingTileState extends State<FoodTrackingTile> {
                           widget.onPopUpButtonClicked(value);
                         },
                         itemBuilder: (ctx) => [
-                          _buildPopupMenuItem('Delete', Options.delete.index),
-                          _buildPopupMenuItem('Move to', Options.move.index),
-                          _buildPopupMenuItem('Copy to', Options.copy.index),
+                          _buildPopupMenuItem('Delete', FoodTrackingOptions.delete.index),
+                          _buildPopupMenuItem('Move to', FoodTrackingOptions.move.index),
+                          _buildPopupMenuItem('Copy to', FoodTrackingOptions.copy.index),
                           _buildPopupMenuItem(
-                              'Report Issue', Options.report.index),
+                              'Report Issue', FoodTrackingOptions.report.index),
                         ],
                       ),
                     ),

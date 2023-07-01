@@ -44,8 +44,14 @@ class EditProfileBody extends StatelessWidget {
         TextEditingController(text: userData.profileData?.fullName);
     TextEditingController emailController =
         TextEditingController(text: userData.profileData?.email);
-    TextEditingController heightController = TextEditingController(
-        text: userData.profileData?.height?.toStringAsFixed(2));
+    TextEditingController heightInFtController = TextEditingController(
+        text: userData.profileData?.height?.truncate().toString());
+    TextEditingController heightInInchController = TextEditingController(
+        text: (((userData.profileData?.height ?? 0) -
+                    (userData.profileData?.height?.truncate() ?? 0)) *
+                12)
+            .truncate()
+            .toString());
     TextEditingController weightController =
         TextEditingController(text: userData.profileData?.weight.toString());
     DateTime dob = userData.profileData?.dob ?? DateTime.now();
@@ -77,25 +83,32 @@ class EditProfileBody extends StatelessWidget {
                   onPressed: () {
                     String fullName = nameController.text;
                     String email = emailController.text;
-                    double height = double.tryParse(heightController.text) ?? 0;
+                    int heightinFt =
+                        int.tryParse(heightInFtController.text) ?? 0;
+                    int heightinInch =
+                        int.tryParse(heightInInchController.text) ?? 0;
                     double weight = double.tryParse(weightController.text) ?? 0;
+
                     if (fullName.isEmpty ||
                         email.isEmpty ||
                         !email.isValidEmail() ||
-                        height == 0 ||
-                        weight == 0) {
+                        (heightinInch == 0) ||
+                        (heightinFt == 0) ||
+                        (weight == 0)) {
                       Toast.show(context, "Please enter valid values");
                       return;
                     }
-                    // ProfileData newProfileData =
-                    userData.profileData?.dob=dob;
-                    userData.profileData?.fullName=fullName;
-                    userData.profileData?.email=email;
-                    userData.profileData?.gender=selectedGender;
-                    userData.profileData?.height=height;
-                    userData.profileData?.weight=weight;
 
-                    
+                    double height = heightinFt + (heightinInch / 12);
+
+                    userData.profileData?.dob = dob;
+                    userData.profileData?.fullName = fullName;
+                    userData.profileData?.email = email;
+                    userData.profileData?.gender = selectedGender;
+                    userData.profileData?.height = height;
+                    userData.profileData?.weight = weight;
+                    userData.profileData?.age = calculateAge(dob);
+
                     Navigator.pop(context, userData);
                   },
                   child: Text(
@@ -295,24 +308,64 @@ class EditProfileBody extends StatelessWidget {
               },
             ),
             const SizedBox(height: 22),
-            Text(
-              "Height in ft",
-              style: p10_400LBlackTextStyle,
-            ),
-            const SizedBox(height: 5),
-            SizedBox(
-              height: 44,
-              child: FormInputField(
-                label: InputFieldsLabel.normal,
-                radius: 10,
-                hintText: "Enter your height in ft",
-                controller: heightController,
-                style: p12_400BlackTitleTextStyle,
-                contentPadding: const EdgeInsets.all(12),
-                showCursor: true,
-                cursorColor: AppColor.blackColor,
-                hintStyle: p12_400GreyTextStyle,
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Height in ft",
+                        style: p10_400LBlackTextStyle,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        height: 44,
+                        child: FormInputField(
+                          label: InputFieldsLabel.normal,
+                          radius: 10,
+                          hintText: "Enter your height in ft",
+                          controller: heightInFtController,
+                          style: p12_400BlackTitleTextStyle,
+                          keyboardType: TextInputType.number,
+                          contentPadding: const EdgeInsets.all(12),
+                          showCursor: true,
+                          cursorColor: AppColor.blackColor,
+                          hintStyle: p12_400GreyTextStyle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Height in inch",
+                        style: p10_400LBlackTextStyle,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        height: 44,
+                        child: FormInputField(
+                          label: InputFieldsLabel.normal,
+                          radius: 10,
+                          hintText: "Enter your height in inch",
+                          controller: heightInInchController,
+                          style: p12_400BlackTitleTextStyle,
+                          contentPadding: const EdgeInsets.all(12),
+                          showCursor: true,
+                          keyboardType: TextInputType.number,
+                          cursorColor: AppColor.blackColor,
+                          hintStyle: p12_400GreyTextStyle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 22),
             Text(
@@ -328,6 +381,7 @@ class EditProfileBody extends StatelessWidget {
                 hintText: "Enter your weight in kg",
                 controller: weightController,
                 style: p12_400BlackTitleTextStyle,
+                keyboardType: TextInputType.number,
                 contentPadding: const EdgeInsets.all(12),
                 showCursor: true,
                 cursorColor: AppColor.blackColor,
@@ -367,7 +421,6 @@ class EditProfileBody extends StatelessWidget {
                           context,
                           DateTime.now(),
                           (dateSelected) {
-                          
                             setState(
                               () {
                                 dob = dateSelected;
@@ -400,5 +453,17 @@ class EditProfileBody extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int calculateAge(DateTime dob) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - dob.year;
+
+    if (currentDate.month < dob.month ||
+        (currentDate.month == dob.month && currentDate.day < dob.day)) {
+      age--;
+    }
+
+    return age;
   }
 }

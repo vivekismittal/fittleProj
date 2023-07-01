@@ -75,7 +75,7 @@ class FoodTrackingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     activeDayBreak = dayBreakList.first;
+    activeDayBreak = dayBreakList.first;
 
     return InternetConnectivityChecked(onTryAgain: () {
       fetchFoodTrackData(context, selectedDate, activeDayBreak);
@@ -100,13 +100,13 @@ class FoodTrackingBody extends StatelessWidget {
               isSaveBtnActive = false;
               foodTrackData =
                   (foodTrackState as FoodTrackSuccessState).foodData;
-              foodTrackData?.userFoodData?.forEach((element) {
-                debugPrint(element.foodName);
-              });
+
               if (foodTrackState.message != null) {
                 Toast.show(context, foodTrackState.message!);
               }
-              // setState(() {});
+              if (foodTrackState.isUpdated) {
+                fetchFoodTrackData(context, selectedDate, activeDayBreak);
+              }
               break;
           }
         },
@@ -262,21 +262,23 @@ class FoodTrackingBody extends StatelessWidget {
                             });
                           },
                           onPopUpButtonClicked: (optionIndex) {
-                            if (optionIndex == Options.copy.index) {
+                            if (optionIndex == FoodTrackingOptions.copy.index) {
                               copyMoveBottomSheet(
                                   context,
                                   "where do you want to copy this food item?",
                                   false,
                                   foodTrackData?.userFoodData?[index].foodId ??
                                       "");
-                            } else if (optionIndex == Options.move.index) {
+                            } else if (optionIndex ==
+                                FoodTrackingOptions.move.index) {
                               copyMoveBottomSheet(
                                   context,
                                   "where do you want to move this food item?",
                                   true,
                                   foodTrackData?.userFoodData?[index].foodId ??
                                       "");
-                            } else if (optionIndex == Options.delete.index) {
+                            } else if (optionIndex ==
+                                FoodTrackingOptions.delete.index) {
                               debugPrint(index.toString());
                               showDeletePopUp(
                                   foodTrackData
@@ -302,20 +304,24 @@ class FoodTrackingBody extends StatelessWidget {
                                       ),
                                     );
                               });
-                            } else if (optionIndex == Options.report.index) {
-                              reportDialogPopUp(context, (reportIssues) {
-                                print(reportIssues);
-                                var foodId =
-                                    foodTrackData?.userFoodData?[index].foodId;
-                                var foodName = foodTrackData
-                                    ?.userFoodData?[index].foodName;
-                                if (foodId != null && foodName != null) {
-                                  context.read<FoodTrackBloc>().add(
-                                        FoodTrackReportIssuesEvent(
-                                            foodId, foodName, reportIssues),
-                                      );
-                                }
-                              });
+                            } else if (optionIndex ==
+                                FoodTrackingOptions.report.index) {
+                              reportDialogPopUp(
+                                context,
+                                (reportIssues) {
+                                  print(reportIssues);
+                                  var foodId = foodTrackData
+                                      ?.userFoodData?[index].foodId;
+                                  var foodName = foodTrackData
+                                      ?.userFoodData?[index].foodName;
+                                  if (foodId != null && foodName != null) {
+                                    context.read<FoodTrackBloc>().add(
+                                          FoodTrackReportIssuesEvent(
+                                              foodId, foodName, reportIssues),
+                                        );
+                                  }
+                                },
+                              );
                             }
                           },
                         );

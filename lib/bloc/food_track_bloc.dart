@@ -47,7 +47,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
           "food_id": event.foodId,
         };
         var (updatedFoodTrack,message) = await _foodTrackRepo.copyMoveFoodTrackData(data);
-        emit(FoodTrackSuccessState(updatedFoodTrack,message: message));
+        emit(FoodTrackSuccessState(updatedFoodTrack,false,message: message));
       }
     } catch (e) {
       addError(e);
@@ -106,7 +106,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
           "is_delete": true,
         };
         var message = await _foodTrackRepo.deleteFoodTrackData(data);
-        emit(FoodTrackSuccessState(event.updatedData,message: message));
+        emit(FoodTrackSuccessState(event.updatedData,true,message: message));
       }
     } catch (e) {
       addError(e);
@@ -138,7 +138,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
         };
 
         var message = await _foodTrackRepo.updateFoodTrackData(data);
-        emit(FoodTrackSuccessState(event.updatedFoodTrack,message: message));
+        emit(FoodTrackSuccessState(event.updatedFoodTrack,true,message: message));
       }
     } catch (e) {
       addError(e);
@@ -189,7 +189,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
           "category_type": event.categoryType
         };
         var foodTrackData = await _foodTrackRepo.getCategoryWiseFoodData(data);
-        emit(FoodTrackSuccessState(foodTrackData));
+        emit(FoodTrackSuccessState(foodTrackData,false));
       }
     } catch (e) {
       addError(e);

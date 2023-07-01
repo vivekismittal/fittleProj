@@ -39,4 +39,7 @@ class SharedRepo {
   Future<bool?> readProfileCompletionStatus() async {
     return await prefs.getBool(_isCompleteKey);
   }
+   Future<bool?> clear() async {
+    return await prefs.clear();
+  }
 }

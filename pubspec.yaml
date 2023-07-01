@@ -44,10 +44,17 @@ dependencies:
   intl: ^0.18.1
   fl_chart: ^0.63.0
   flutter_dotenv: ^5.1.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/png/appIcon.png"
+  adaptive_icon_background: "#ffffff"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -73,6 +80,8 @@ flutter:
     - assets/lotties/
     - assets/png/
     - assets/.env
+
+  
 
   # assets:
   #   - images/a_dot_burr.jpeg

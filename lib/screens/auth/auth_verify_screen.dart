@@ -120,7 +120,7 @@ class AuthVerifyBody extends StatelessWidget {
                   case AuthOtpVerifiedState:
                     String screenPath =
                         ScreenPaths.profileCompletionScreenPath.name;
-                    int? index = 0;
+                    int? index;
                     if ((authState as AuthOtpVerifiedState).isProfileExist &&
                         authState.profileIndex != null) {
                       index = authState.profileIndex;

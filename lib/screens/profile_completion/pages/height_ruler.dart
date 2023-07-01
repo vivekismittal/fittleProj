@@ -27,8 +27,9 @@ class _HeightRulerPageState extends State<HeightRulerPage> {
 
   @override
   Widget build(BuildContext context) {
+    // print(((widget.heightRulerModel.height % 1) * intervals).round());
     int ft = widget.heightRulerModel.height.toInt();
-    int inch = ((widget.heightRulerModel.height % 1) * intervals).toInt();
+    int inch = ((widget.heightRulerModel.height % 1) * intervals).round();
     return Column(
       children: [
         RichText(
@@ -43,13 +44,13 @@ class _HeightRulerPageState extends State<HeightRulerPage> {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 40),
         Container(
-          height: 260,
+          height: 300,
           width: 144,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: AppColor.callToActionColor,
+            color: AppColor.progressBarColor.withOpacity(.9),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,

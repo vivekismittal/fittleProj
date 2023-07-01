@@ -15,8 +15,7 @@ class WorkoutTrackBloc
     on<WorkoutSearchedEvent>(_onWorkoutSearchedEvent);
     on<WorkoutDetailFetchedEvent>(_onWorkoutDetailFetchedEvent);
     on<PostUpdatedWorkoutTrackEvent>(_onPostUpdatedWorkoutTrackEvent);
-
-
+    on<WorkoutTrackDeleteEvent>(_onWorkoutTrackDeleteEvent);
   }
   void _onWorkoutDetailFetchedEvent(
     WorkoutDetailFetchedEvent event,
@@ -74,7 +73,7 @@ class WorkoutTrackBloc
     PostUpdatedWorkoutTrackEvent event,
     Emitter emit,
   ) async {
-    emit(PostUpdatedWorkoutLoadingState());
+    emit(WorkoutTrackingLoadingState());
     try {
       var userId = await sharedRepo.readUserId();
       var profileId = await sharedRepo.readProfileId();
@@ -87,15 +86,49 @@ class WorkoutTrackBloc
           "user_id": userId,
           "profile_id": profileId,
           "request_date": event.date,
-          "exercise_raw_data": event.workoutTrackData.toJsonForUpdate()["exercise_raw_data"]
+          "exercise_raw_data":
+              event.workoutTrackData.toJsonForUpdate()["exercise_raw_data"]
         };
 
         var message = await _workoutTrackRepo.updateWorkoutTrack(data);
-        emit(WorkoutTrackingFetchedState( event.workoutTrackData,message: message));
+        emit(WorkoutTrackingFetchedState(event.workoutTrackData,
+            message: message));
       }
     } catch (e) {
       addError(e);
-      emit(PostUpdatedWorkoutErrorState(e.toString()));
+      emit(WorkoutTrackingErrorState(e.toString()));
+    }
+  }
+
+  void _onWorkoutTrackDeleteEvent(
+    WorkoutTrackDeleteEvent event,
+    Emitter emit,
+  ) async {
+    emit(WorkoutTrackingLoadingState());
+    try {
+      var userId = await sharedRepo.readUserId();
+      var profileId = await sharedRepo.readProfileId();
+      var isProfileComplete = await sharedRepo.readProfileCompletionStatus();
+      if (userId != null &&
+          profileId != null &&
+          isProfileComplete != null &&
+          isProfileComplete) {
+        var data = {
+          "user_id": userId,
+          "profile_id": profileId,
+          "request_date": event.date,
+          "exercise_id": event.exerciseId,
+        };
+
+        var message = await _workoutTrackRepo.deleteWorkoutTrack(data);
+        event.workoutTrackData.userExerciseData
+            ?.removeWhere((element) => element.exerciseId == event.exerciseId);
+        emit(WorkoutTrackingFetchedState(event.workoutTrackData,
+            message: message));
+      }
+    } catch (e) {
+      addError(e);
+      emit(WorkoutTrackingErrorState(e.toString()));
     }
   }
 

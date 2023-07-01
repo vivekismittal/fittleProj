@@ -12,8 +12,10 @@ import 'package:fittle_ai/utils/screen_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/navigation_bloc.dart';
 import '../../resources/components/texts/custom_text.dart';
 import '../../resources/components/toast.dart';
+import '../../utils/singleton.dart';
 
 class ProfileBody extends StatelessWidget {
   final void Function() onUpgradeClick;
@@ -58,6 +60,7 @@ class ProfileBody extends StatelessWidget {
                           (profileState as ProfileFetchUserDataState).data;
                       break;
                     case ProfileErrorState:
+                      print(userData?.profileData?.email);
                       context.read<LoaderBloc>().add(DisabledLoadingEvent(
                           ScreenPaths.homeDashBoardPath.name));
                       Toast.show(
@@ -674,25 +677,16 @@ class ProfileBody extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               InkWell(
-                                onTap: () {},
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Account",
-                                      style: p12_400GreyTextStyle,
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: AppColor.gray_1,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Singleton().sharedRepo.clear();
+                                  context.read<NavigationBloc>().add(
+                                        ScreenPushedAndRemoveUntilEvent(
+                                            ScreenPaths
+                                                .authLoginScreenPath.name,
+                                            "",
+                                            from: '/'),
+                                      );
+                                },
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -724,9 +718,26 @@ class ProfileBody extends StatelessWidget {
   }
 
   void asyncNavigation(BuildContext context, ProfileData? userData) async {
+    var profileData = userData?.profileData;
     ProfileData? updateProfileData = await Navigator.of(context).pushNamed(
-        ScreenPaths.editProfileScreenPath.name,
-        arguments: userData) as ProfileData?;
+      ScreenPaths.editProfileScreenPath.name,
+      arguments: ProfileData(
+        profileData: ProfileDataClass(
+            fullName: profileData?.fullName,
+            age: profileData?.age,
+            dob: profileData?.dob,
+            email: profileData?.email,
+            gender: profileData?.gender,
+            height: profileData?.height,
+            mobile: profileData?.mobile,
+            profileGoal: profileData?.profileGoal,
+            profileImage: profileData?.profileImage,
+            weight: profileData?.weight,
+            workingLifestyle: profileData?.workingLifestyle,
+            workoutlevel: profileData?.workoutlevel),
+      ),
+    ) as ProfileData?;
+    print(userData?.profileData?.email);
 
     if (updateProfileData != null) {
       var selectedYear =

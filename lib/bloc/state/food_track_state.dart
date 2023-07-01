@@ -21,7 +21,8 @@ class FoodTrackErrorState extends FoodTrackState {
 class FoodTrackSuccessState extends FoodTrackState {
   final FoodTrackingData foodData;
 final String? message;
-  FoodTrackSuccessState(this.foodData, {this.message});
+final bool isUpdated;
+  FoodTrackSuccessState(this.foodData, this.isUpdated, {this.message});
 }
 
 class FoodSearchLoadingState extends FoodTrackState {}

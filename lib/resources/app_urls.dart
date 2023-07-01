@@ -35,4 +35,5 @@ abstract class AppUrls {
   static final copyMoveFoodTrackUrl= "$baseUrl/user/api/copy-move-category-data/";
   static final deleteFoodTrackUrl= "$baseUrl/user/api/delete-category-food/";
   static final reportIssuesUrl = "$baseUrl/user/api/report-issue/";
+  static final deleteWorkoutTrackUrl = "$baseUrl/user/api/delete-exercise-data/";
 }
