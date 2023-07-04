@@ -111,51 +111,52 @@ class _CountryDropDownState extends State<CountryDropDown> {
     return DropdownMenuItem(
       value: value,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                country.flag,
-                style: const TextStyle(fontSize: 24),
-              )
-              // icon,
-              ),
-          Expanded(
-            child: Text(
-              " ${country.dialCode}",
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w500,
-              ),
-              overflow: TextOverflow.ellipsis,
+          Text(
+            country.flag,
+            style: const TextStyle(fontSize: 24),
+          ),
+          Text(
+            " ${country.dialCode}",
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w500,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
   }
 
-  PopupMenuItem _buildPopupMenuItem(Country country, int index) {
-    return PopupMenuItem(
-        value: index,
-        child: Row(
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Text(
-                  country.flag,
-                  style: const TextStyle(fontSize: 24),
-                )
-                // icon,
-                ),
-            Expanded(
-              child: Text(
-                " ${country.dialCode}",
-                style: p12_500WhiteTextStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ));
-  }
+  // PopupMenuItem _buildPopupMenuItem(Country country, int index) {
+  //   return PopupMenuItem(
+  //       value: index,
+  //       child: Row(
+  //         crossAxisAlignment: CrossAxisAlignment.center,
+  //         children: [
+  //           Placeholder(
+  //             child: Padding(
+  //                 padding: const EdgeInsets.only(left: 4),
+  //                 child: Text(
+  //                   country.flag,
+  //                   style: const TextStyle(fontSize: 24),
+  //                 )
+  //                 // icon,
+  //                 ),
+  //           ),
+  //           Placeholder(
+  //             child: Expanded(
+  //               child: Text(
+  //                 " ${country.dialCode}",
+  //                 style: p12_500WhiteTextStyle,
+  //                 overflow: TextOverflow.ellipsis,
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ));
+  // }
 }

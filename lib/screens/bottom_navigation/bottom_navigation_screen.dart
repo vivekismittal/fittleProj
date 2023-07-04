@@ -5,11 +5,13 @@ import 'package:fittle_ai/resources/components/texts/custom_text.dart';
 import 'package:fittle_ai/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../bloc/home_dashboard_bloc.dart';
 import '../../utils/screen_paths.dart';
 import '../common/custom_loader_screen.dart';
 import '../dasboard/home_dashboard_screen.dart';
+import '../plan.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -29,8 +31,16 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             child: const HomeDasboardBody(),
           );
         }
+      case 1:
+        return PlanScreen();
+         BlocProvider(
+          create: (context) => ProfileBloc(),
+          child: PlanScreen(),
+        );
+
       case 2:
-        return BlocProvider(
+        return
+         BlocProvider(
           create: (context) => ProfileBloc(),
           child: ProfileBody(
             onUpgradeClick: () {
@@ -42,7 +52,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         );
       default:
         return const Center(
-          child: Text("Coming Soon....."),
+          child: Text("Something Went Wrong!!"),
         );
     }
   }
@@ -51,7 +61,11 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   Widget build(BuildContext context) {
     return CustomScreenWithLoader(
       withGradient: false,
-      body: getTabsBodyWidget(selectedTabIndex),
+      body:  BlocProvider(
+          create: (context) => ProfileBloc(),
+          child: getTabsBodyWidget(selectedTabIndex),
+        )
+      ,
       id: ScreenPaths.homeDashBoardPath.name,
       bottomNavigationBar: SizedBox(
         child: BottomNavigationBar(
@@ -62,11 +76,11 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           currentIndex: selectedTabIndex,
           items: [
             bottomNavigationBarItem(
-                "Home", Constant.homePng, selectedTabIndex == 0),
+                "Home", Constant.homeSvg, selectedTabIndex == 0),
             bottomNavigationBarItem(
-                "Plan", Constant.planPng, selectedTabIndex == 1),
+                "Plan", Constant.planSvg, selectedTabIndex == 1),
             bottomNavigationBarItem(
-                "Profile", Constant.profilePng, selectedTabIndex == 2),
+                "Profile", Constant.profileSvg, selectedTabIndex == 2),
           ],
           onTap: (value) {
             if (value != selectedTabIndex) {
@@ -101,7 +115,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               backgroundColor:
                   isSelected ? AppColor.progressBarColor : AppColor.d6d6d6Color,
               radius: 18,
-              child: Image.asset(
+              child: SvgPicture.asset(
                 iconAsset,
                 color:
                     isSelected ? AppColor.whiteColor : AppColor.offBlackColor,

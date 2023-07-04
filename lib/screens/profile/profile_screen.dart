@@ -135,7 +135,7 @@ class ProfileBody extends StatelessWidget {
                             keyValueCard("Height",
                                 "${userData?.profileData?.height?.truncate()}ft ${(((userData?.profileData?.height ?? 0) - (userData?.profileData?.height?.truncate() ?? 0)) * 12).truncate()}in"),
                             keyValueCard("Weight",
-                                "${userData?.profileData?.weight?.toStringAsFixed(1)}kg"),
+                                "${userData?.profileData?.weight?.toString()}kg"),
                             keyValueCard(
                                 userData?.profileData?.age.toString() ?? "",
                                 "AGE"),
@@ -526,6 +526,7 @@ class ProfileBody extends StatelessWidget {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               SelectableGoalGridTiles(
+                                                
                                                 goalModel: goalModel,
                                                 isFromProfileSetting: true,
                                                 onSelect: () {
@@ -678,14 +679,16 @@ class ProfileBody extends StatelessWidget {
                               const SizedBox(height: 12),
                               InkWell(
                                 onTap: () {
-                                  Singleton().sharedRepo.clear();
-                                  context.read<NavigationBloc>().add(
-                                        ScreenPushedAndRemoveUntilEvent(
-                                            ScreenPaths
-                                                .authLoginScreenPath.name,
-                                            "",
-                                            from: '/'),
-                                      );
+                                  showLogoutPopUp(context, () {
+                                    Singleton().sharedRepo.clear();
+                                    context.read<NavigationBloc>().add(
+                                          ScreenPushedAndRemoveUntilEvent(
+                                              ScreenPaths
+                                                  .authLoginScreenPath.name,
+                                              "",
+                                              from: '/'),
+                                        );
+                                  });
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -703,7 +706,7 @@ class ProfileBody extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          ),
+                          )
                         ),
                         const SizedBox(height: 22),
                       ],
@@ -715,6 +718,63 @@ class ProfileBody extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  void showLogoutPopUp(BuildContext context, void Function() onLogout) async {
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        title: Text(
+          "Are you sure, you want to logout",
+          style: m12_600BlackTextStyle,
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(ctx);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                // color: AppColor.,
+              ),
+              height: 26,
+              width: 78,
+              child: Center(
+                child: Text(
+                  "Cancel",
+                  style: m12_600LBlackTextStyle,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(ctx);
+              onLogout();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: AppColor.red,
+              ),
+              height: 26,
+              width: 78,
+              child: Center(
+                child: Text(
+                  "Logout",
+                  style: m12_600WhiteTextStyle,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   void asyncNavigation(BuildContext context, ProfileData? userData) async {

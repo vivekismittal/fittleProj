@@ -17,20 +17,21 @@ class ProfileData {
 }
 
 class ProfileDataClass {
-   String? fullName;
-   DateTime? dob;
-   double? weight;
-   int? age;
+  String? fullName;
+  DateTime? dob;
+  double? weight;
+  int? age;
 
-   double? height;
-   String? gender;
-   String? mobile;
-   String? email;
+  double? height;
+  String? gender;
+  String? mobile;
+  String? email;
 
-   String? workoutlevel;
-   String? profileImage;
-   List<String>? profileGoal;
-   String? workingLifestyle;
+  String? workoutlevel;
+  String? profileImage;
+  List<String>? profileGoal;
+  String? workingLifestyle;
+  bool? isWaitListJoined;
 
   ProfileDataClass(
       {this.fullName,
@@ -44,6 +45,7 @@ class ProfileDataClass {
       this.profileImage,
       this.profileGoal,
       this.workingLifestyle,
+      this.isWaitListJoined,
       this.age});
 
   factory ProfileDataClass.fromJson(Map<String, dynamic> json) =>
@@ -61,7 +63,8 @@ class ProfileDataClass {
               ? []
               : List<String>.from(json["profile_goal"]!.map((x) => x)),
           workingLifestyle: json["working_lifestyle"],
-          age: json["age"]);
+          age: json["age"],
+          isWaitListJoined: json["user__is_waitlist_joined"]);
 
   // Map<String, dynamic> toJson() => {
   //     "full_name": fullName,

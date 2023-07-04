@@ -110,7 +110,7 @@ class GridSelectionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(9),
       ),
       color: isSelected
-          ? AppColor.progressBarColor
+          ? (isFromProfileSetting ? AppColor.progressBarColor : AppColor.whiteColor)
           : (isFromProfileSetting ? AppColor.whiteParaColor : Colors.white38),
       onPressed: toggleSelection,
       child: Column(
@@ -122,8 +122,8 @@ class GridSelectionTile extends StatelessWidget {
               child: CircleAvatar(
                 radius: 7,
                 backgroundColor: isSelected
-                    ? AppColor.whiteColor
-                    : AppColor.progressBarColor,
+                    ? !isFromProfileSetting ? AppColor.progressBarColor : AppColor.whiteColor
+                    : isFromProfileSetting ? AppColor.progressBarColor : AppColor.whiteColor,
                 child: Icon(
                   isSelected ? Icons.remove : Icons.add,
                   size: 10,
@@ -154,7 +154,7 @@ class GridSelectionTile extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: p12_500WhiteTextStyle.copyWith(
+                  style: p14_500WhiteTextStyle.copyWith(
                     color: isFromProfileSetting
                         ? isSelected
                             ? AppColor.whiteColor

@@ -27,11 +27,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       var userId = await _sharedRepo.readUserId();
       var profileId = await _sharedRepo.readProfileId();
-      var isProfileComplete = await _sharedRepo.readProfileCompletionStatus();
+      var profileIndex = await _sharedRepo.readProfileIndex();
       if (userId != null &&
           profileId != null &&
-          isProfileComplete != null &&
-          isProfileComplete) {
+          profileIndex != null &&
+          profileIndex == -1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -70,7 +70,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             createUpdateProfileResponse.nextProfileIndex != null) {
           await _sharedRepo
               .saveProfileId(createUpdateProfileResponse.profileId!);
-          await _sharedRepo.saveProfileCompletionStatus(true);
+          await _sharedRepo
+              .saveProfileIndex(createUpdateProfileResponse.nextProfileIndex!);
+
+          if (createUpdateProfileResponse.nextProfileIndex == -1 ||
+              event.isProfileFinished) {
+            await _sharedRepo.saveProfileIndex(-1);
+          }
           emit(ProfileCreatedUpdatedState(
             createUpdateProfileResponse.nextProfileIndex! - 1,
             event.profileData,

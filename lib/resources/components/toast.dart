@@ -14,7 +14,7 @@ class Toast extends StatelessWidget {
       child: Material(
         elevation: 4.0,
         borderRadius: BorderRadius.circular(16.0),
-        color: AppColor.lightBlackColor.withOpacity(0.5),
+        color: AppColor.offBlackColor.withOpacity(.8),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
           child: Text(

@@ -137,7 +137,7 @@ class FoodDetailBody extends StatelessWidget {
                                           style: p14_500BlackTextStyle,
                                         ),
                                         Text(
-                                          "${(foodData.foodCalorie ?? 0).toStringAsFixed(0)} kcal",
+                                          "${(foodData.foodCalorie ?? 0).round()} kcal",
                                           style: p10_400LBlackTextStyle,
                                         ),
                                       ],

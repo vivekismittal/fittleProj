@@ -20,14 +20,18 @@ class SplashScreen extends StatelessWidget {
       String? userId = await _sharedRepo.readUserId();
       String? profileId = await _sharedRepo.readProfileId();
       var routePath = ScreenPaths.authLoginScreenPath.name;
-      bool? isComplete = await _sharedRepo.readProfileCompletionStatus();
+      int? profileIndex = await _sharedRepo.readProfileIndex();
+      print(userId);
+      print(profileId);
+      print(profileIndex);
       if (userId != null) {
         routePath = ScreenPaths.profileCompletionScreenPath.name;
-        if (profileId != null && isComplete != null && isComplete) {
+        if (profileId != null && profileIndex != null && profileIndex==-1) {
           routePath = ScreenPaths.homeDashBoardPath.name;
+          profileIndex=null;
         }
       }
-      Navigator.pushNamedAndRemoveUntil(context, routePath, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, routePath, (route) => false,arguments: profileIndex);
     });
 
     return SafeArea(

@@ -31,7 +31,7 @@ List<ProfileCompletionPageData> listOfCompleteProfilePages(
     ProfileCompletionPageData(
       title: "Set Your Goal",
       subTitle:
-          "Let’s take a minute to check if we have got everything right about you",
+          "This will help us personalize your experience",
       child: SelectableGoalGridTiles(
         goalModel: (profileCompletionData.goalModelObj as GoalModel),
       ),
@@ -43,7 +43,7 @@ List<ProfileCompletionPageData> listOfCompleteProfilePages(
     ProfileCompletionPageData(
       title: "Fill Your Profile",
       subTitle:
-          "Let’s take a minute to check if we have got everything right about you",
+          "How should we address you?",
       child: YourDetailFields(
         yourDetailModel: (profileCompletionData.detailModelObj as DetailModel),
       ),
@@ -68,7 +68,7 @@ List<ProfileCompletionPageData> listOfCompleteProfilePages(
     ProfileCompletionPageData(
       title: "How Old Are You?",
       subTitle:
-          "Age in years. This will help us to personalize an exercise program plan that suits you.",
+          "This is used to set up recommendations just for you. You can always change it later.",
       child: SlidingCalender(
         howOldModel: (profileCompletionData.howOldModelObj as HowOldModel),
       ),
@@ -104,7 +104,7 @@ List<ProfileCompletionPageData> listOfCompleteProfilePages(
     ProfileCompletionPageData(
       title: "Physical Activity Level?",
       subTitle:
-          "Choose your regular activity levsel. This will help us to personalize plans for you.",
+          "Choose your regular activity level. This will help us to personalize plans for you.",
       child: ActivityLevel(
         activityModel:
             (profileCompletionData.activityModelObj as ActivityModel),
@@ -115,9 +115,9 @@ List<ProfileCompletionPageData> listOfCompleteProfilePages(
   //8
   pages.add(
     ProfileCompletionPageData(
-      title: "Choose Work Life Style?",
+      title: "Choose Your LifeStyle",
       subTitle:
-          "Choose your regular activity levsel. This will help us to personalize plans for you.",
+          "Choose your regular activity level. This will help us to personalize plans for you.",
       child: WorkLifeCycle(
         workLifeCycleModel:
             (profileCompletionData.workLifeCycleModelObj as WorkLifeCycleModel),

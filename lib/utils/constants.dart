@@ -4,14 +4,21 @@ class Constant {
   ///svgs
   static const String splashSvg = "assets/svg/splash.svg";
   static const String whatsappSvg = "assets/svg/whatsApp.svg";
+  static const String foodTrackSvg =  "assets/svg/foodTrack.svg";
+  static const String glassSvg =  "assets/svg/glass.svg";
+  static const String dumbellSvg = "assets/svg/Dumbbell.svg";
+  static const String homeSvg = "assets/svg/home.svg";
+  static const String profileSvg = "assets/svg/profile.svg";
+  static const String planSvg = "assets/svg/plan.svg";
+  static const String pillatesSvg = "assets/svg/pillates.svg";
+  static const String insightSvg = "assets/svg/insight.svg";
+  static const String dissapointedEmojiSvg = "assets/svg/disappointed-face.svg";
+
 
   static const String musclePng = "assets/png/muscle.png";
   static const String pilatesPng = "assets/png/pilates.png";
   static const String voltmeterPng = "assets/png/voltmeter.png";
   static const String yogaPng = "assets/png/yoga.png";
-  static const String activityInsightPng = "assets/png/Activityinsight.png";
-  static const String restaurantPng = "assets/png/Restaurant.png";
-  static const String waterGlassPng = "assets/png/Group_water_glass.png";
   static const String dumbbellPng = "assets/png/Dumbbell.png";
   static const String carbsPng = "assets/png/carbs.png";
   static const String fatPng = "assets/png/fat.png";
@@ -23,17 +30,13 @@ class Constant {
       "assets/png/food_detail_placeholder.png";
   static const String exerciseDetailPlaceholder =
       "assets/png/exercise_detail_placeholder.png";
-  static const String homePng = "assets/png/home.png";
-  static const String profilePng = "assets/png/profile.png";
-  static const String planPng = "assets/png/plan.png";
-  static const String insightSvg = "assets/svg/insight.svg";
-  static const String dissapointedEmojiSvg = "assets/svg/disappointed-face.svg";
   static const String dissapointedEmojiPng =
       "assets/png/emoji-disappointed.png";
 
   ///lotties
   static const String loaderLottie = "assets/lotties/app-loader.json";
   static const String darkLoaderLottie = "assets/lotties/black_loader.json";
+  static const String successTicekLottie =  "assets/lotties/successful-tick.json";
 
   ///Linear Gradient
   static const LinearGradient backgroundGradient = LinearGradient(

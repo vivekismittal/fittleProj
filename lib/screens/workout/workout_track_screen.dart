@@ -53,11 +53,12 @@ class WorkoutTrackingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime selectedDate = DateTime.now();
+
     return InternetConnectivityChecked(
       onTryAgain: () => fetchWorkoutTrackData(context, selectedDate),
       child: BlocConsumer<WorkoutTrackBloc, WorkoutTrackingState>(
         buildWhen: (previous, current) =>
-            current is WorkoutTrackingFetchedState ,
+            current is WorkoutTrackingFetchedState,
         listener: (context, state) {
           switch (state.runtimeType) {
             case WorkoutTrackingErrorState:
@@ -120,59 +121,58 @@ class WorkoutTrackingBody extends StatelessWidget {
                                   1,
                           itemBuilder: (context, index) {
                             if (index == 0) {
-                              return Container(
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColor.whiteColor,
-                                ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 48,
-                                      height: 48,
-                                      child: CircleAvatar(
-                                        backgroundColor: AppColor
-                                            .burntTargetProgressColor
-                                            .withOpacity(0.2),
-                                        radius: 24,
-                                        child: Center(
-                                          child: SizedBox(
-                                            height: 28,
-                                            width: 28,
-                                            child: Image.asset(
-                                              Constant.pilatesPng,
-                                              color: AppColor
-                                                  .burntTargetProgressColor,
+                              return InkWell(
+                                onTap: () {
+                                  asyncNavigateToSearch(context, setState);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColor.whiteColor,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 48,
+                                        height: 48,
+                                        child: CircleAvatar(
+                                          backgroundColor: AppColor
+                                              .burntTargetProgressColor
+                                              .withOpacity(0.2),
+                                          radius: 24,
+                                          child: Center(
+                                            child: SizedBox(
+                                              height: 28,
+                                              width: 28,
+                                              child: Image.asset(
+                                                Constant.pilatesPng,
+                                                color: AppColor
+                                                    .burntTargetProgressColor,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 14),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: caloriesTarget.toStringAsFixed(1),
-                                        style: p14_500BlackTextStyle,
-                                        children: [
-                                          TextSpan(
-                                            text: " kcal",
-                                            style: p12_400BlackTitleTextStyle,
-                                          ),
-                                          TextSpan(
-                                            text: "\nCalories Target",
-                                            style: p8_400LBlackTextStyle,
-                                          ),
-                                        ],
+                                      const SizedBox(width: 14),
+                                      RichText(
+                                        text: TextSpan(
+                                          text: caloriesTarget.toString(),
+                                          style: p14_500BlackTextStyle,
+                                          children: [
+                                            TextSpan(
+                                              text: " kcal",
+                                              style: p12_400BlackTitleTextStyle,
+                                            ),
+                                            TextSpan(
+                                              text: "\nCalories Target",
+                                              style: p8_400LBlackTextStyle,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () {
-                                        asyncNavigateToSearch(
-                                            context, setState);
-                                      },
-                                      child: const SizedBox(
+                                      const Spacer(),
+                                      const SizedBox(
                                         height: 20,
                                         width: 20,
                                         child: CircleAvatar(
@@ -185,8 +185,8 @@ class WorkoutTrackingBody extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               );
                             }
@@ -200,6 +200,9 @@ class WorkoutTrackingBody extends StatelessWidget {
                             subTitles.add(
                                 "${data?.exerciseData?.keys.first} : ${data?.exerciseData?.values.first}");
                             return WorkoutTrackTile(
+                              onCardClick: () {
+                                asyncNavigateToDetail(context, setState, data);
+                              },
                               key: UniqueKey(),
                               title: data?.exerciseName ?? "",
                               subTitles: subTitles,
@@ -212,16 +215,22 @@ class WorkoutTrackingBody extends StatelessWidget {
                                 }
                                 if (optionIndex ==
                                     WeightTrackingOptions.delete.index) {
-                                  var exerciseId = workoutTrackData
-                                      ?.userExerciseData?[index].exerciseId;
-                               
-                                  context.read<WorkoutTrackBloc>().add(
-                                      WorkoutTrackDeleteEvent(
-                                          workoutTrackData ??
-                                              WorkoutTrackData(),
-                                          date:
-                                              "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
-                                          exerciseId: exerciseId ?? ""));
+                                  showDeletePopUp(
+                                      workoutTrackData?.userExerciseData?[index]
+                                              .exerciseName ??
+                                          "",
+                                      context, () {
+                                    var exerciseId = workoutTrackData
+                                        ?.userExerciseData?[index].exerciseId;
+
+                                    context.read<WorkoutTrackBloc>().add(
+                                        WorkoutTrackDeleteEvent(
+                                            workoutTrackData ??
+                                                WorkoutTrackData(),
+                                            date:
+                                                "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
+                                            exerciseId: exerciseId ?? ""));
+                                  });
                                 }
                               },
                             );
@@ -298,6 +307,70 @@ class WorkoutTrackingBody extends StatelessWidget {
     }
   }
 
+  void showDeletePopUp(
+      String workout, BuildContext context, void Function() onDelete) async {
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        title: Text(
+          "Are you sure, you want to delete this",
+          style: m12_600BlackTextStyle,
+        ),
+        content: Text(
+          workout,
+          style: p10_400BlackTextStyle,
+          overflow: TextOverflow.clip,
+          maxLines: 2,
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(ctx);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                // color: AppColor.,
+              ),
+              height: 26,
+              width: 78,
+              child: Center(
+                child: Text(
+                  "Cancel",
+                  style: m12_600LBlackTextStyle,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(ctx);
+              onDelete();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: AppColor.red,
+              ),
+              height: 26,
+              width: 78,
+              child: Center(
+                child: Text(
+                  "Delete",
+                  style: m12_600WhiteTextStyle,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   void asyncNavigateToDetail(
       BuildContext context,
       void Function(void Function()) setState,
@@ -337,59 +410,84 @@ class WorkoutTrackTile extends StatelessWidget {
     required this.subTitles,
     required this.id,
     required this.onPopUpButtonClicked,
+    required this.onCardClick,
   });
   final String title;
   final List<String> subTitles;
   final String id;
   final void Function(int) onPopUpButtonClicked;
+  final void Function() onCardClick;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 7),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: AppColor.whiteColor,
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            Constant.workoutTilePng,
-            height: 32,
-            width: 32,
-          ),
-          const SizedBox(width: 12),
-          RichText(
-            text: TextSpan(
-              text: "$title\n",
-              style: p12_400BlackTextStyle,
-              children: List.generate(
-                subTitles.length,
-                (index) {
-                  return TextSpan(
-                      text:
-                          "${subTitles[index]}${index != subTitles.length - 1 ? " | " : ""}",
-                      style: p8_400LBlackTextStyle);
-                },
+    return InkWell(
+      onTap: onCardClick,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 7),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: AppColor.whiteColor,
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              Constant.workoutTilePng,
+              height: 32,
+              width: 32,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "$title\n",
+                    style: p12_400BlackTextStyle.copyWith(fontSize: 16),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    "${subTitles.first}",
+                    style: p8_400LBlackTextStyle.copyWith(fontSize: 12),
+                  )
+                ],
               ),
             ),
-          ),
-          const Spacer(),
-          PopupMenuButton(
-            child: const Icon(
-              Icons.more_vert_outlined,
-              color: AppColor.lightBlackColor,
-            ),
-            onOpened: () {},
-            onSelected: (value) {
-              onPopUpButtonClicked(value);
-            },
-            itemBuilder: (ctx) => [
-              _buildPopupMenuItem('Edit', WeightTrackingOptions.edit.index),
-              _buildPopupMenuItem('Delete', WeightTrackingOptions.delete.index),
-            ],
-          )
-        ],
+            // RichText(
+            //   text: TextSpan(
+            //     text: "$title\n",
+            //     style: p12_400BlackTextStyle.copyWith(fontSize: 16),
+            //     children: List.generate(
+            //       subTitles.length,
+            //       (index) {
+            //         return TextSpan(
+            //           text:
+
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            SizedBox(width: 6),
+            // const Spacer(),
+            PopupMenuButton(
+              child: const Icon(
+                Icons.more_vert_outlined,
+                color: AppColor.lightBlackColor,
+              ),
+              onOpened: () {},
+              onSelected: (value) {
+                onPopUpButtonClicked(value);
+              },
+              itemBuilder: (ctx) => [
+                _buildPopupMenuItem('Edit', WeightTrackingOptions.edit.index),
+                _buildPopupMenuItem(
+                    'Delete', WeightTrackingOptions.delete.index),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

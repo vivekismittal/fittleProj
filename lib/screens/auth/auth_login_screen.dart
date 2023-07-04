@@ -1,4 +1,5 @@
 import 'package:fittle_ai/common/form_input_field.dart';
+import 'package:fittle_ai/resources/components/texts/custom_text.dart';
 import 'package:fittle_ai/resources/components/toast.dart';
 import 'package:fittle_ai/screens/auth/widgets/country_drop_down.dart';
 import 'package:flutter/material.dart';
@@ -63,20 +64,20 @@ class AuthLoginBody extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               "Let's Take Your\nFirst Step",
-              style: theme.textTheme.headlineSmall,
+              style: m24_600WhiteTextStyle,
             ),
             const SizedBox(height: 8),
             RichText(
               text: TextSpan(
                 text:
                     "To get started, please enter your phone number.\nWe will send you the ",
-                style: theme.textTheme.labelSmall?.copyWith(
+                style: p12_400WhiteTextStyle.copyWith(
                   color: theme.colorScheme.secondary,
                 ),
                 children: [
                   TextSpan(
                     text: "6 digit",
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style:p12_400WhiteTextStyle.copyWith(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
@@ -87,8 +88,9 @@ class AuthLoginBody extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 36),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
@@ -131,13 +133,11 @@ class AuthLoginBody extends StatelessWidget {
                     children: [
                       Text(
                         "Receive updates and reminders on ",
-                        style:
-                            theme.textTheme.labelSmall?.copyWith(fontSize: 8),
+                        style: p12_400WhiteTextStyle,
                       ),
                       SvgPicture.asset(Constant.whatsappSvg),
                       Text(" whatsapp",
-                          style:
-                              theme.textTheme.labelSmall?.copyWith(fontSize: 8),
+                          style: p12_400WhiteTextStyle,
                           overflow: TextOverflow.ellipsis),
                     ],
                   ),
@@ -155,26 +155,20 @@ class AuthLoginBody extends StatelessWidget {
                     children: [
                       Text(
                         "By signing up, I agree to the ",
-                        style:
-                            theme.textTheme.labelSmall?.copyWith(fontSize: 8),
+                        style: p12_400WhiteTextStyle,
                       ),
                       Text("Terms of Service",
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            fontSize: 8,
-                            color: AppColor.whiteColor,
+                          style: p12_400WhiteTextStyle.copyWith(
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
                           )),
                       Text(
                         " and ",
-                        style:
-                            theme.textTheme.labelSmall?.copyWith(fontSize: 8),
+                        style: p12_400WhiteTextStyle,
                       ),
                       Text(
                         "Privacy Policy",
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          fontSize: 8,
-                          color: AppColor.whiteColor,
+                        style: p12_400WhiteTextStyle.copyWith(
                           fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline,
                         ),
@@ -196,6 +190,8 @@ class AuthLoginBody extends StatelessWidget {
                 listener: (context, authState) {
                   switch (authState.runtimeType) {
                     case AuthOtpSentState:
+                    context.read<LoaderBloc>().add(DisabledLoadingEvent(
+                          ScreenPaths.authLoginScreenPath.name));
                       context.read<NavigationBloc>().add(ScreenPushedEvent(
                           ScreenPaths.authVerifyScreenPath.name,
                           arguments:
@@ -251,22 +247,29 @@ class AuthLoginBody extends StatelessWidget {
   Widget loginCheckBox(List<Widget> widgetList,
       {required void Function(bool? value) onChecked, required bool? value}) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        
             // ignore: unnecessary_cast
             StatefulBuilder(
-              builder: (context, setState) => Checkbox(
-                  checkColor: AppColor.callToActionColor,
-                  fillColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    return AppColor.whiteColor;
-                  }),
-                  value: value,
-                  onChanged: (changedValue) {
-                    onChecked(changedValue);
-                    setState(() {
-                      value = changedValue;
-                    });
-                  }),
+              builder: (context, setState) => Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Checkbox(
+                  visualDensity: VisualDensity(horizontal: -4,vertical: -4),
+                    checkColor: AppColor.callToActionColor,
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                    fillColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      return AppColor.whiteColor;
+                    }),
+                    value: value,
+                    onChanged: (changedValue) {
+                      onChecked(changedValue);
+                      setState(() {
+                        value = changedValue;
+                      });
+                    }),
+              ),
             ) as Widget,
           ] +
           widgetList,

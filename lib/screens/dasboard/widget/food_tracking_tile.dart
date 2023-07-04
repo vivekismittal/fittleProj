@@ -34,7 +34,7 @@ class _FoodTrackingTileState extends State<FoodTrackingTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
@@ -95,7 +95,7 @@ class _FoodTrackingTileState extends State<FoodTrackingTile> {
             ],
           ),
           Text(
-            "${foodTileData.foodCalorie?.toStringAsFixed(0)} KCal",
+            "${foodTileData.foodCalorie?.toString()} KCal",
             style: p8_400LBlackTextStyle,
           ),
           Row(
@@ -104,19 +104,19 @@ class _FoodTrackingTileState extends State<FoodTrackingTile> {
               NutrientsValue(
                   title: "Protein",
                   asset: Constant.proteinPng,
-                  value: foodTileData.foodProtein ?? 0),
+                  value: (foodTileData.foodProtein ?? 0)/1),
               NutrientsValue(
                   title: "Carbs",
                   asset: Constant.carbsPng,
-                  value: foodTileData.foodCarbs ?? 0),
+                  value: (foodTileData.foodCarbs ?? 0)/1),
               NutrientsValue(
                   title: "Fat",
                   asset: Constant.fatPng,
-                  value: foodTileData.foodFat ?? 0),
+                  value: (foodTileData.foodFat ?? 0)/1),
               NutrientsValue(
                   title: "Fibre",
                   asset: Constant.fibrePng,
-                  value: foodTileData.foodFibre ?? 0),
+                  value:( foodTileData.foodFibre ?? 0)/1),
             ],
           )
         ],

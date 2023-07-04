@@ -5,7 +5,7 @@ import '../app_color.dart';
 Widget customButton({
   required BuildContext context,
   bool isEnabled = false,
-  double minWidth = 88.0,
+  double minWidth = 100.0,
   required void Function()? onPressed,
   required String title,
 }) {
@@ -14,8 +14,8 @@ Widget customButton({
   return InkWell(
     onTap: isEnabled ? onPressed : null,
     child: Container(
-      width: minWidth,
-      height: 36,
+      // width: minWidth,
+      // height: 50,
       decoration: ShapeDecoration(
         color: AppColor.whiteColor.withOpacity(isEnabled ? 1 : 0.5),
         shape: RoundedRectangleBorder(
@@ -24,12 +24,16 @@ Widget customButton({
           ),
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Text(
-        title,
-        style: theme.textTheme.headlineSmall?.copyWith(
-          color: AppColor.callToActionColor.withOpacity(isEnabled ? 1 : 0.65),
-          fontSize: 12,
+      // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Padding(
+        
+        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 16),
+        child: Text(
+          title,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: AppColor.callToActionColor.withOpacity(isEnabled ? 1 : 0.65),
+            fontSize: 14,
+          ),
         ),
       ),
     ),

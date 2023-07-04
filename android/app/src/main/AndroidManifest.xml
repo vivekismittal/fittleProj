@@ -2,7 +2,7 @@
     package="com.example.fittle_ai">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="fittle_ai"
+        android:label="Fittle.ai"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

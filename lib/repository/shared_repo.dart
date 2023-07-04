@@ -5,7 +5,7 @@ class SharedRepo {
   final String _hashTokenKey = "hash_token";
   final String _userIdKey = "user_id";
   final String _profileIdKey = "profile_id";
-  final String _isCompleteKey = "isProfileComplete";
+  final String _profileIndexKey = "_profileIndexKey";
   final SharedPrefs prefs = SharedPrefs();
 
   Future<void> saveHashToken(String value) async {
@@ -32,12 +32,12 @@ class SharedRepo {
     return await prefs.getString(_profileIdKey);
   }
 
-  Future<void> saveProfileCompletionStatus(bool value) async {
-    await prefs.setBool(_isCompleteKey, value);
+    Future<void> saveProfileIndex(int value) async {
+    await prefs.setInt(_profileIndexKey, value);
   }
 
-  Future<bool?> readProfileCompletionStatus() async {
-    return await prefs.getBool(_isCompleteKey);
+  Future<int?> readProfileIndex() async {
+    return await prefs.getInt(_profileIndexKey);
   }
    Future<bool?> clear() async {
     return await prefs.clear();

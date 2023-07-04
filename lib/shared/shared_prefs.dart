@@ -11,14 +11,14 @@ class SharedPrefs {
     return prefs.getString(key);
   }
 
-    Future<void> setBool(String key, bool value) async {
+    Future<void> setInt(String key, int value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(key, value);
+    await prefs.setInt(key, value);
   }
 
-  Future<bool?> getBool(String key) async {
+  Future<int?> getInt(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key);
+    return prefs.getInt(key);
   }
    Future<bool?> clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

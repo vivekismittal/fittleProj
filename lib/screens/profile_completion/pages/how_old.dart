@@ -41,7 +41,7 @@ class _SlidingCalenderState extends State<SlidingCalender> {
     _selectedDay = widget.howOldModel.selectedDay;
     _selectedMonth = widget.howOldModel.selectedMonth;
     _selectedYear = widget.howOldModel.selectedYear;
-    startingYear = 1947;
+    startingYear = 1900;
     context.read<ProfileBloc>().add(
         ProfileEnabledProceedEvent(ProfileCompletionData.howOldModelIndex));
     super.initState();

@@ -34,11 +34,19 @@ class _HeightRulerPageState extends State<HeightRulerPage> {
       children: [
         RichText(
           text: TextSpan(
-            text: "$ft’ $inch”",
+            text: "${ft}",
             style: m24_600WhiteTextStyle,
             children: [
               TextSpan(
                 text: "ft",
+                style: p16_500WhiteTextStyle,
+              ),
+              TextSpan(
+                text: " ${inch}",
+                style: m24_600WhiteTextStyle,
+              ),
+               TextSpan(
+                text: "in",
                 style: p16_500WhiteTextStyle,
               ),
             ],

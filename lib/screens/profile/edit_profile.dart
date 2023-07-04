@@ -238,6 +238,7 @@ class EditProfileBody extends StatelessWidget {
                       showCursor: true,
                       cursorColor: AppColor.blackColor,
                       hintStyle: p12_400GreyTextStyle,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],

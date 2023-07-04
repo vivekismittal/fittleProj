@@ -29,11 +29,11 @@ class HomeDashboardBloc extends Bloc<HomeDasboardEvent, HomeDasboardState> {
     try {
       var userId = await sharedRepo.readUserId();
       var profileId = await sharedRepo.readProfileId();
-      var isProfileComplete = await sharedRepo.readProfileCompletionStatus();
+      var profileIndex = await sharedRepo.readProfileIndex();
       if (userId != null &&
           profileId != null &&
-          isProfileComplete != null &&
-          isProfileComplete) {
+          profileIndex != null &&
+          profileIndex==-1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -59,11 +59,11 @@ class HomeDashboardBloc extends Bloc<HomeDasboardEvent, HomeDasboardState> {
     try {
       var userId = await sharedRepo.readUserId();
       var profileId = await sharedRepo.readProfileId();
-      var isProfileComplete = await sharedRepo.readProfileCompletionStatus();
+      var profileIndex = await sharedRepo.readProfileIndex();
       if (userId != null &&
           profileId != null &&
-          isProfileComplete != null &&
-          isProfileComplete) {
+          profileIndex != null &&
+          profileIndex==-1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -86,11 +86,11 @@ class HomeDashboardBloc extends Bloc<HomeDasboardEvent, HomeDasboardState> {
     try {
       var userId = await sharedRepo.readUserId();
       var profileId = await sharedRepo.readProfileId();
-      var isProfileComplete = await sharedRepo.readProfileCompletionStatus();
+      var profileIndex = await sharedRepo.readProfileIndex();
       if (userId != null &&
           profileId != null &&
-          isProfileComplete != null &&
-          isProfileComplete) {
+          profileIndex != null &&
+          profileIndex==-1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -115,11 +115,11 @@ class HomeDashboardBloc extends Bloc<HomeDasboardEvent, HomeDasboardState> {
     try {
       var userId = await sharedRepo.readUserId();
       var profileId = await sharedRepo.readProfileId();
-      var isProfileComplete = await sharedRepo.readProfileCompletionStatus();
+      var profileIndex = await sharedRepo.readProfileIndex();
       if (userId != null &&
           profileId != null &&
-          isProfileComplete != null &&
-          isProfileComplete) {
+          profileIndex != null &&
+          profileIndex==-1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,

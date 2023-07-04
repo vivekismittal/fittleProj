@@ -114,11 +114,16 @@ class FoodSearchBody extends StatelessWidget {
                               asyncNavigation(context, food);
                             },
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  food.foodName ?? "",
-                                  style: p10_400BlackTextStyle,
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical:10),
+                                    child: Text(
+                                      food.foodName ?? "",
+                                      style: p10_400BlackTextStyle.copyWith(fontSize: 14),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 20,

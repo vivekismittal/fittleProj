@@ -1,3 +1,5 @@
+import 'package:fittle_ai/resources/components/custom_button.dart';
+import 'package:fittle_ai/resources/components/texts/custom_text.dart';
 import 'package:fittle_ai/screens/auth/widgets/otp_field.dart';
 import 'package:fittle_ai/screens/auth/widgets/otp_resend_timer.dart';
 import 'package:fittle_ai/utils/constants.dart';
@@ -57,25 +59,23 @@ class AuthVerifyBody extends StatelessWidget {
         children: [
           Text(
             "👋  Welcome",
-            style: theme.textTheme.bodySmall
-                ?.copyWith(color: theme.colorScheme.primary),
+            style: p10_400WhiteTextStyle.copyWith(
+                color: theme.colorScheme.primary),
           ),
           const SizedBox(height: 12),
           Text(
             "Let's Take Your\nFirst Step",
-            style: theme.textTheme.headlineSmall,
+            style: m24_600WhiteTextStyle,
           ),
           const SizedBox(height: 8),
           RichText(
             text: TextSpan(
               text: "Enter OTP Received on ",
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.secondary,
-              ),
+              style: p12_400WhiteTextStyle,
               children: [
                 TextSpan(
                   text: mobile,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: p12_400WhiteTextStyle.copyWith(
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
@@ -111,8 +111,10 @@ class AuthVerifyBody extends StatelessWidget {
                     break;
                   case AuthOtpResentState:
                     otpTimerKey.currentState?.startTimer();
-                    context.read<LoaderBloc>().add(DisabledLoadingEvent(
-                        ScreenPaths.authVerifyScreenPath.name));
+                    context.read<LoaderBloc>().add(
+                          DisabledLoadingEvent(
+                              ScreenPaths.authVerifyScreenPath.name),
+                        );
                     Toast.show(
                         context, (authState as AuthOtpResentState).message);
                     break;
@@ -128,12 +130,9 @@ class AuthVerifyBody extends StatelessWidget {
                         screenPath = ScreenPaths.homeDashBoardPath.name;
                       }
                     }
-                    context
-                        .read<NavigationBloc>()
-                        .add(ScreenPushedAndRemoveUntilEvent(
-                          screenPath,
-                          "",arguments: index
-                        ));
+                    context.read<NavigationBloc>().add(
+                        ScreenPushedAndRemoveUntilEvent(screenPath, "",
+                            arguments: index));
                     break;
                   case AuthVerificationErrorState:
                     context.read<LoaderBloc>().add(DisabledLoadingEvent(
@@ -146,20 +145,15 @@ class AuthVerifyBody extends StatelessWidget {
                 }
               },
               builder: (context, authState) {
-                return SizedBox(
-                  width: 113,
-                  child: BaseTextButton(
-                    isActive: isVerifyButtonEnabled,
-                    title: "verify".toUpperCase(),
-                    isFilled: true,
-                    onPressed: () {
-                      if (finalOtp.isNotEmpty) {
-                        context
-                            .read<AuthBloc>()
-                            .add(OtpVerifiedEvent(finalOtp));
-                      } else {}
-                    },
-                  ),
+                return customButton(
+                  isEnabled: isVerifyButtonEnabled,
+                  title: "          ${"verify".toUpperCase()}          ",
+                  context: context,
+                  onPressed: () {
+                    if (finalOtp.isNotEmpty) {
+                      context.read<AuthBloc>().add(OtpVerifiedEvent(finalOtp));
+                    } else {}
+                  },
                 );
               },
               buildWhen: (previous, current) {

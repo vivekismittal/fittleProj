@@ -38,7 +38,7 @@ class EachIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 4,
-      width: index == currentIndex ? 40 : 24,
+      width: index == currentIndex ? 54 : 28,
       decoration: BoxDecoration(
         color: index > currentIndex
             ? AppColor.whiteParaColor.withOpacity(.5)

@@ -109,22 +109,25 @@ class FoodTrackingBody extends StatelessWidget {
               }
               break;
           }
+
+          print(selectedDate);
         },
         builder: (context, foodTrackState) {
           if (foodTrackState is! FoodTrackSuccessState) {
             return const SizedBox();
           }
-
+          print(selectedDate);
           return Column(
             children: [
               Container(
                 padding: const EdgeInsetsDirectional.only(top: 44),
                 color: AppColor.whiteColor,
                 child: DateSlider(
-                  title: "Daily Nutition",
+                  title: "Daily Nutrition",
                   selectedDate: selectedDate,
                   onDateChanged: (date) {
                     selectedDate = date;
+
                     fetchFoodTrackData(context, selectedDate, activeDayBreak);
                   },
                   isBackButtonVisible: true,
@@ -140,8 +143,8 @@ class FoodTrackingBody extends StatelessWidget {
                 child: ColoredBox(
                   color: AppColor.backgroundColor,
                   child: ListView.builder(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 22, vertical: 20),
                     itemCount: (foodTrackData?.userFoodData?.length ?? 0) + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
@@ -171,10 +174,7 @@ class FoodTrackingBody extends StatelessWidget {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        (foodTrackData
-                                                    ?.categoryCaloriePercentage ??
-                                                0)
-                                            .toStringAsFixed(1),
+                                        "${(foodTrackData?.categoryCaloriePercentage ?? 0).round()}%",
                                         textAlign: TextAlign.center,
                                         style: p12_500BlackTextStyle,
                                       ),
@@ -185,19 +185,20 @@ class FoodTrackingBody extends StatelessWidget {
                               const SizedBox(width: 14),
                               RichText(
                                 text: TextSpan(
-                                  text: ((foodTrackData
-                                                  ?.categoryCaloriePercentage ??
-                                              0) *
-                                          (foodTrackData
-                                                  ?.categoryCalorieTarget ??
-                                              0) /
-                                          100)
-                                      .toStringAsFixed(2),
+                                  text: (((foodTrackData
+                                                      ?.categoryCaloriePercentage ??
+                                                  0) *
+                                              (foodTrackData
+                                                      ?.categoryCalorieTarget ??
+                                                  0) /
+                                              100)
+                                          .round())
+                                      .toString(),
                                   style: p14_500BlackTextStyle,
                                   children: [
                                     TextSpan(
                                       text:
-                                          " of ${(foodTrackData?.categoryCalorieTarget ?? 0).toStringAsFixed(0)} calories",
+                                          " of ${(foodTrackData?.categoryCalorieTarget ?? 0).round()} calories",
                                       style: p12_400BlackTitleTextStyle,
                                     ),
                                     TextSpan(
@@ -417,8 +418,7 @@ class FoodTrackingBody extends StatelessWidget {
                 List.generate(
                   totalReportIssues.length,
                   (index) => Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       children: [
                         StatefulBuilder(
@@ -436,14 +436,14 @@ class FoodTrackingBody extends StatelessWidget {
                         ),
                         Text(
                           totalReportIssues.keys.toList()[index],
-                          style: p10_400BlackTextStyle,
+                          style: p12_400BlackTextStyle,
                         ),
                       ],
                     ),
                   ),
                 ),
           ),
-          actionsAlignment: MainAxisAlignment.center,
+          actionsAlignment: MainAxisAlignment.spaceAround,
           actions: [
             GestureDetector(
               onTap: () {
@@ -455,7 +455,7 @@ class FoodTrackingBody extends StatelessWidget {
                   // color: AppColor.,
                 ),
                 height: 26,
-                width: 78,
+                width: 90,
                 child: Center(
                   child: Text(
                     "Cancel",
@@ -479,10 +479,10 @@ class FoodTrackingBody extends StatelessWidget {
                   color: AppColor.red,
                 ),
                 height: 26,
-                width: 78,
+                width: 90,
                 child: Center(
                   child: Text(
-                    "Delete",
+                    "Report Issue",
                     style: m12_600WhiteTextStyle,
                   ),
                 ),

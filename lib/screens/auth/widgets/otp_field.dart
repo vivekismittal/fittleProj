@@ -90,8 +90,8 @@ class _InputOtpFieldState extends State<InputOtpField> {
       children: List.generate(
         widget.otpLength,
         (index) => SizedBox(
-          width: 36,
-          height: 36,
+          width: 42,
+          height: 42,
           child: FormInputField(
             label: InputFieldsLabel.otp,
             isFilled: false,

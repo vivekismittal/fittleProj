@@ -77,9 +77,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (otpVerifiedResponse.profileId != null &&
             otpVerifiedResponse.profileIndex != null) {
           await _sharedRepo.saveProfileId(otpVerifiedResponse.profileId!);
-          if (otpVerifiedResponse.profileIndex == -1) {
-            await _sharedRepo.saveProfileCompletionStatus(true);
-          }
+            await _sharedRepo.saveProfileIndex(otpVerifiedResponse.profileIndex!);
         }
         emit(
           AuthOtpVerifiedState(

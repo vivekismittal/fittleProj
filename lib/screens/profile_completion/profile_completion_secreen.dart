@@ -137,7 +137,7 @@ class ProfileCompletionBody extends StatelessWidget {
               padding: const EdgeInsets.only(left: 64, right: 64, top: 6),
               child: Text(
                 currentPageModel.subTitle,
-                style: p11_400ParaTextStyle,
+                style: p11_400ParaTextStyle.copyWith(fontSize: 13),
                 textAlign: TextAlign.center,
               ),
             ),

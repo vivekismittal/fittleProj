@@ -27,7 +27,7 @@ class NutrientsValue extends StatelessWidget {
         const SizedBox(width: 8),
         RichText(
           text: TextSpan(
-            text: "${value.toStringAsFixed(1)} g\n",
+            text: "${value.round()} g\n",
             style: p10_500OffBlackTextStyle,
             children: [TextSpan(text: title, style: p8_400LBlackTextStyle)],
           ),

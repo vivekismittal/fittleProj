@@ -1,3 +1,4 @@
+import 'package:fittle_ai/resources/components/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -58,14 +59,12 @@ class DateSlider extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   text: title,
-                  style: p12_400BlackTextStyle,
+                  style: p12_400BlackTextStyle.copyWith(fontSize: 14),
                   children: [
                     TextSpan(
                       text: "\n$subTitle",
                       style: p10_400OffBlackTextStyle.copyWith(
-                        fontWeight: FontWeight.bold,
-                        // fontSize: 12
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 12),
                     )
                   ],
                 ),
@@ -73,13 +72,22 @@ class DateSlider extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  selectDate(context, DateTime.now(), (dateSelected) {
-                    onDateChanged(dateSelected);
-                  });
+                  selectDate(
+                    context,
+                    DateTime.now(),
+                    (dateSelected) {
+                      var currentDate = DateTime.now();
+                      dateSelected.year > dateSelected.year ||
+                              dateSelected.month > currentDate.month ||
+                              dateSelected.day > currentDate.day
+                          ? Toast.show(context, "Future Date not supported!")
+                          : onDateChanged(dateSelected);
+                    },
+                  );
                 },
                 child: Container(
-                  height: 24,
-                  width: 24,
+                  height: 30,
+                  width: 30,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       border:
@@ -88,7 +96,7 @@ class DateSlider extends StatelessWidget {
                     child: Icon(
                       Icons.calendar_month,
                       color: AppColor.outlineColor,
-                      size: 14,
+                      size: 16,
                     ),
                   ),
                 ),
@@ -112,7 +120,7 @@ class DateSlider extends StatelessWidget {
         if (isDayBreakVisible)
           Container(
             color: AppColor.f9f9f9Color,
-            height: 30,
+            height: 50,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: dayBreakList.length,
@@ -130,7 +138,6 @@ class DateSlider extends StatelessWidget {
                 ),
               ),
             ),
-    
           ),
       ],
     );
@@ -144,15 +151,22 @@ class DateSlider extends StatelessWidget {
     return InkWell(
       onTap: onClick,
       child: Container(
+        width: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
           color: isActive ? color : null,
         ),
-        padding: const EdgeInsets.all(6),
-        height: 24,
-        child: Text(
-          title,
-          style: isActive ? p8_500WhiteTextStyle : p8_400OffBlackTextStyle,
+        // padding: const EdgeInsets.all(6),
+        height: 50,
+        child: Center(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+
+            child: Text(
+              title,
+              style: isActive ? p8_500WhiteTextStyle.copyWith(fontSize: 10) : p8_400OffBlackTextStyle.copyWith(fontSize: 10),
+            ),
+          ),
         ),
       ),
     );
@@ -167,13 +181,11 @@ class DateSlider extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: InkWell(
-        onTap:
-            // index + 1 > DateTime.now().day
-            //     ? null
-            //     :
-            () {
-          onDateChanged(
-              DateTime(selectedDate.year, selectedDate.month, index + 1));
+        onTap: () {
+          index + 1 > DateTime.now().day
+              ? Toast.show(context, "Future Date not supported!")
+              : onDateChanged(
+                  DateTime(selectedDate.year, selectedDate.month, index + 1));
         },
         child: Column(
           children: [
@@ -198,18 +210,18 @@ class DateSlider extends StatelessWidget {
                     DateFormat.E().format(DateTime(
                         selectedDate.year, selectedDate.month, index + 1)),
                     style: p8_400LBlackTextStyle.copyWith(
-                      color: selectedDate.day == index + 1
-                          ? AppColor.whiteColor
-                          : AppColor.lightBlackColor,
-                    ),
+                        color: selectedDate.day == index + 1
+                            ? AppColor.whiteColor
+                            : AppColor.lightBlackColor,
+                        fontSize: 10),
                   ),
                   Text(
                     (index + 1).toString(),
                     style: p8_400LBlackTextStyle.copyWith(
-                      color: selectedDate.day == index + 1
-                          ? AppColor.whiteColor
-                          : AppColor.lightBlackColor,
-                    ),
+                        color: selectedDate.day == index + 1
+                            ? AppColor.whiteColor
+                            : AppColor.lightBlackColor,
+                        fontSize: 10),
                   ),
                 ],
               ),

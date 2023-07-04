@@ -13,3 +13,9 @@ LottieBuilder darkAppLoader({double? width, double? height}) =>
       height: height,
       width: width,
     );
+LottieBuilder successTick({double? width, double? height}) =>
+    LottieBuilder.asset(
+      Constant.successTicekLottie,
+      height: height,
+      width: width,
+    );

@@ -7,6 +7,7 @@ import 'package:fittle_ai/resources/components/internet_connectivity_check.dart'
 import 'package:fittle_ai/screens/dasboard/widget/horizontal_paginated_card.dart';
 import 'package:fittle_ai/utils/extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../resources/resources.dart';
 import 'package:fittle_ai/utils/screen_paths.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class HomeDasboardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime selectedDate = DateTime.now();
+
     HomeDashBoardResponse? homeData;
     // fetchHomeData(context, selectedDate);
 
@@ -56,6 +58,7 @@ class HomeDasboardBody extends StatelessWidget {
                   context.read<LoaderBloc>().add(
                       DisabledLoadingEvent(ScreenPaths.homeDashBoardPath.name));
                   homeData = (homeState as HomeDasboardSuccessState).homeData;
+                  break;
               }
             },
             builder: (context, homeState) {
@@ -139,7 +142,7 @@ class HomeDasboardBody extends StatelessWidget {
                               },
                               isDayBreakVisible: false,
                             ),
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 30),
                             HorizontalCardPager(
                                 bannerData: homeData?.bannerData ?? []),
                             const SizedBox(height: 28),
@@ -154,104 +157,181 @@ class HomeDasboardBody extends StatelessWidget {
                       ),
                       sliver: SliverList.list(
                         children: [
-                          Text("Nutrition", style: p12_400BlackTextStyle),
+                          Text("Nutrition",
+                              style:
+                                  p12_400BlackTextStyle.copyWith(fontSize: 16)),
                           const SizedBox(height: 16),
-                          Container(
-                            // height: 200,
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColor.whiteColor,
-                            ),
-                            child: Column(
-                              children: [
-                                progressTracking(
-                                    color: AppColor.progressBarColor,
-                                    assest2: Constant.activityInsightPng,
-                                    percentValue: homeData?.dietWorkoutData
-                                            ?.caloriePercentage ??
-                                        0,
-                                    subTitle: "\nTotal Calory gained",
-                                    title:
-                                        " kcal of ${homeData?.dietWorkoutData?.targetCalorie ?? 0}",
-                                    total: (homeData?.dietWorkoutData
-                                                ?.targetCalorie ??
-                                            0) *
-                                        (homeData?.dietWorkoutData
-                                                ?.caloriePercentage ??
-                                            0) /
-                                        100,
-                                    assest1: Constant.restaurantPng,
-                                    onAsset1Tap: () {
-                                      context.read<NavigationBloc>().add(
-                                          ScreenPushedEvent(ScreenPaths
-                                              .foodTrackScreenPath.name));
-                                    },
-                                    onAsset2Tap: () {
-                                      Navigator.of(context).pushNamed(
-                                        ScreenPaths.foodInsightsScreenPath.name,
-                                      );
-                                    }),
-                                const SizedBox(height: 20),
-                                // Divider(
-                                //     thickness: 1,
-                                //     color: AppColor.lightBlackColor
-                                //         .withOpacity(.5)),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    nutrientsProgress(
-                                        color: AppColor.proteinGreenColor,
-                                        label: "Protein",
-                                        total: homeData?.dietWorkoutData
-                                                ?.targetProtein ??
-                                            0,
-                                        percentage: (homeData?.dietWorkoutData
-                                                ?.proteinPercentage ??
-                                            0)),
-                                    nutrientsProgress(
-                                        color: AppColor.fatPurpleColor,
-                                        label: "Fat",
-                                        total: homeData
-                                                ?.dietWorkoutData?.targetFat ??
-                                            0,
-                                        percentage: (homeData?.dietWorkoutData
-                                                ?.fatPercentage ??
-                                            0))
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    nutrientsProgress(
-                                        color: AppColor.carbsYellowColor,
-                                        label: "Carbs",
-                                        total: homeData?.dietWorkoutData
-                                                ?.targetCarbs ??
-                                            0,
-                                        percentage: (homeData?.dietWorkoutData
-                                                ?.carbsPercentage ??
-                                            0)),
-                                    nutrientsProgress(
-                                        color: AppColor.fiberRedColor,
-                                        label: "Fiber",
-                                        total: homeData?.dietWorkoutData
-                                                ?.targetFibre ??
-                                            0,
-                                        percentage: (homeData?.dietWorkoutData
-                                                ?.fibrePercentage ??
-                                            0))
-                                  ],
-                                ),
-                              ],
+                          InkWell(
+                            onTap: () {
+                              context.read<NavigationBloc>().add(
+                                  ScreenPushedEvent(
+                                      ScreenPaths.foodTrackScreenPath.name));
+                            },
+                            child: Container(
+                              // height: 200,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.whiteColor,
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 48,
+                                        height: 48,
+                                        child: Stack(
+                                          fit: StackFit.expand,
+                                          children: [
+                                            CircularProgressIndicator(
+                                              value: ((homeData?.dietWorkoutData
+                                                              ?.caloriePercentage ??
+                                                          0) /
+                                                      100) /
+                                                  1,
+                                              color: AppColor.progressBarColor,
+                                              backgroundColor:
+                                                  AppColor.backgroundColor,
+                                              strokeWidth: 3.2,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "${(homeData?.dietWorkoutData?.caloriePercentage ?? 0).round()}%",
+                                                textAlign: TextAlign.center,
+                                                style: p12_500BlackTextStyle,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 14),
+                                      RichText(
+                                        text: TextSpan(
+                                          text:
+                                              "${((homeData?.dietWorkoutData?.targetCalorie ?? 0) * (homeData?.dietWorkoutData?.caloriePercentage ?? 0) / 100).round()}",
+                                          style: p14_500BlackTextStyle,
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  " kcal of ${(homeData?.dietWorkoutData?.targetCalorie ?? 0).round()}",
+                                              style: p12_400BlackTitleTextStyle,
+                                            ),
+                                            TextSpan(
+                                              text: "\nTotal Calory gained",
+                                              style: p8_400LBlackTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            ScreenPaths
+                                                .foodInsightsScreenPath.name,
+                                          );
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundColor: AppColor
+                                              .progressBarColor
+                                              .withOpacity(.1),
+                                          radius: 20,
+                                          child: SvgPicture.asset(
+                                            Constant.insightSvg,
+                                            fit: BoxFit.fill,
+                                            height: 20,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      CircleAvatar(
+                                          backgroundColor:
+                                              AppColor.progressBarColor,
+                                          radius: 20,
+                                          child: SvgPicture.asset(
+                                            Constant.foodTrackSvg,
+                                            height: 20,
+                                            fit: BoxFit.fill,
+                                          ))
+                                    ],
+                                  ),
+                                  // progressTracking(
+                                  //     color: AppColor.progressBarColor,
+                                  //     assest2: Constant.activityInsightPng,
+                                  //     percentValue: ,
+                                  //     subTitle: ,
+                                  //     title:
+                                  //         ,
+                                  // total: ,
+                                  //     assest1: Constant.restaurantPng,
+                                  //     onAsset1Tap: ,
+                                  //     onAsset2Tap:),
+                                  const SizedBox(height: 20),
+                                  // Divider(
+                                  //     thickness: 1,
+                                  //     color: AppColor.lightBlackColor
+                                  //         .withOpacity(.5)),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      nutrientsProgress(
+                                          color: AppColor.proteinGreenColor,
+                                          label: "Protein",
+                                          total: (homeData?.dietWorkoutData
+                                                      ?.targetProtein ??
+                                                  0) /
+                                              1,
+                                          percentage: (homeData?.dietWorkoutData
+                                                  ?.proteinPercentage ??
+                                              0)),
+                                      nutrientsProgress(
+                                          color: AppColor.fatPurpleColor,
+                                          label: "Fat",
+                                          total: homeData?.dietWorkoutData
+                                                  ?.targetFat ??
+                                              0,
+                                          percentage: (homeData?.dietWorkoutData
+                                                  ?.fatPercentage ??
+                                              0))
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      nutrientsProgress(
+                                          color: AppColor.carbsYellowColor,
+                                          label: "Carbs",
+                                          total: homeData?.dietWorkoutData
+                                                  ?.targetCarbs ??
+                                              0,
+                                          percentage: (homeData?.dietWorkoutData
+                                                  ?.carbsPercentage ??
+                                              0)),
+                                      nutrientsProgress(
+                                          color: AppColor.fiberRedColor,
+                                          label: "Fiber",
+                                          total: homeData?.dietWorkoutData
+                                                  ?.targetFibre ??
+                                              0,
+                                          percentage: (homeData?.dietWorkoutData
+                                                  ?.fibrePercentage ??
+                                              0))
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 28),
                           Container(
-                            height: 60,
+                            height: 80,
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 16),
                             decoration: BoxDecoration(
@@ -290,8 +370,8 @@ class HomeDasboardBody extends StatelessWidget {
                                             .withOpacity(.20),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Image.asset(
-                                              Constant.waterGlassPng,
+                                          child: SvgPicture.asset(
+                                              Constant.glassSvg,
                                               fit: BoxFit.fill),
                                         ),
                                       ),
@@ -335,8 +415,8 @@ class HomeDasboardBody extends StatelessWidget {
                                               );
                                         },
                                         child: SizedBox(
-                                          height: 20,
-                                          width: 20,
+                                          height: 24,
+                                          width: 24,
                                           child: CircleAvatar(
                                             backgroundColor: AppColor.whiteColor
                                                 .withOpacity(.20),
@@ -344,7 +424,7 @@ class HomeDasboardBody extends StatelessWidget {
                                                 AppColor.whiteColor,
                                             child: const Icon(
                                               Icons.remove,
-                                              size: 14,
+                                              size: 20,
                                             ),
                                           ),
                                         ),
@@ -362,8 +442,8 @@ class HomeDasboardBody extends StatelessWidget {
                                               );
                                         },
                                         child: const SizedBox(
-                                          height: 20,
-                                          width: 20,
+                                          height: 24,
+                                          width: 24,
                                           child: CircleAvatar(
                                             foregroundColor:
                                                 AppColor.progressBarColor,
@@ -371,7 +451,7 @@ class HomeDasboardBody extends StatelessWidget {
                                                 AppColor.whiteColor,
                                             child: Icon(
                                               Icons.add,
-                                              size: 14,
+                                              size: 20,
                                             ),
                                           ),
                                         ),
@@ -382,80 +462,82 @@ class HomeDasboardBody extends StatelessWidget {
                           ),
                           const SizedBox(height: 28),
                           Text("Workout Tracking",
-                              style: p12_400BlackTextStyle),
+                              style:
+                                  p12_400BlackTextStyle.copyWith(fontSize: 16)),
                           const SizedBox(height: 16),
-                          Container(
-                            height: 78,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: AppColor.whiteColor),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                ScreenPaths.workoutTrackScreenPath.name,
+                                arguments: homeData
+                                        ?.dietWorkoutData?.calorieBurntTarget ??
+                                    0,
+                              );
+                            },
                             child: Container(
-                              padding: const EdgeInsets.all(16),
+                              height: 78,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: AppColor.whiteColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 48,
-                                    height: 48,
-                                    child: CircleAvatar(
-                                      backgroundColor: AppColor
-                                          .burntTargetProgressColor
-                                          .withOpacity(0.2),
-                                      radius: 24,
-                                      child: Center(
-                                        child: SizedBox(
-                                          height: 28,
-                                          width: 28,
-                                          child: Image.asset(
-                                            Constant.pilatesPng,
-                                            color: AppColor
-                                                .burntTargetProgressColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColor.whiteColor),
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColor.whiteColor,
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 48,
+                                      height: 48,
+                                      child: CircleAvatar(
+                                        backgroundColor: AppColor
+                                            .burntTargetProgressColor
+                                            .withOpacity(0.2),
+                                        radius: 24,
+                                        child: Center(
+                                          child: SizedBox(
+                                            height: 28,
+                                            width: 28,
+                                            child: Image.asset(
+                                              Constant.pilatesPng,
+                                              color: AppColor
+                                                  .burntTargetProgressColor,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 14),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: (homeData?.dietWorkoutData
-                                                  ?.calorieBurntTarget ??
-                                              0.0)
-                                          .toStringAsFixed(1),
-                                      style: p14_500BlackTextStyle,
-                                      children: [
-                                        TextSpan(
-                                          text: " kcal",
-                                          style: p12_400BlackTitleTextStyle,
-                                        ),
-                                        TextSpan(
-                                          text: "\nCalories Target",
-                                          style: p8_400LBlackTextStyle,
-                                        ),
-                                      ],
+                                    const SizedBox(width: 14),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: ((homeData?.dietWorkoutData
+                                                        ?.calorieBurntTarget ??
+                                                    0)
+                                                .round())
+                                            .toString(),
+                                        style: p14_500BlackTextStyle,
+                                        children: [
+                                          TextSpan(
+                                            text: " kcal",
+                                            style: p12_400BlackTitleTextStyle,
+                                          ),
+                                          TextSpan(
+                                            text: "\nCalories Target",
+                                            style: p8_400LBlackTextStyle,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                        ScreenPaths.workoutTrackScreenPath.name,
-                                        arguments: homeData?.dietWorkoutData
-                                                ?.calorieBurntTarget ??
-                                            0,
-                                      );
-                                    },
-                                    child: CircleAvatar(
+                                    const Spacer(),
+                                    CircleAvatar(
                                       backgroundColor:
                                           AppColor.burntTargetProgressColor,
                                       radius: 14,
                                       child: Image.asset(Constant.dumbbellPng),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -476,94 +558,19 @@ class HomeDasboardBody extends StatelessWidget {
         });
   }
 
-  Row progressTracking({
-    required Color color,
-    required double percentValue,
-    required String title,
-    required String subTitle,
-    required double total,
-    required String assest1,
-    String? assest2,
-    void Function()? onAsset1Tap,
-    void Function()? onAsset2Tap,
-  }) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 48,
-          height: 48,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              CircularProgressIndicator(
-                value: percentValue / 100,
-                color: color,
-                backgroundColor: AppColor.backgroundColor,
-                strokeWidth: 3.2,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "$percentValue%",
-                  textAlign: TextAlign.center,
-                  style: p12_500BlackTextStyle,
-                ),
-              )
-            ],
-          ),
-        ),
-        const SizedBox(width: 14),
-        RichText(
-          text: TextSpan(
-            text: "${total.toInt()}",
-            style: p14_500BlackTextStyle,
-            children: [
-              TextSpan(
-                text: title,
-                style: p12_400BlackTitleTextStyle,
-              ),
-              TextSpan(
-                text: subTitle,
-                style: p8_400LBlackTextStyle,
-              ),
-            ],
-          ),
-        ),
-        const Spacer(),
-        if (assest2 != null)
-          InkWell(
-            onTap: onAsset2Tap,
-            child: CircleAvatar(
-              backgroundColor: color.withOpacity(.1),
-              radius: 20,
-              child: Image.asset(
-                assest2,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high,
-                height: 18,
-              ),
-            ),
-          ),
-        if (assest2 != null)
-          const SizedBox(
-            width: 16,
-          ),
-        InkWell(
-          onTap: onAsset1Tap,
-          child: CircleAvatar(
-            backgroundColor: color,
-            radius: 20,
-            child: Image.asset(
-              assest1,
-              fit: BoxFit.fill,
-              filterQuality: FilterQuality.high,
-              height: 20,
-            ),
-          ),
-        )
-      ],
-    );
-  }
+  // Row progressTracking({
+  //   required Color color,
+  //   required double percentValue,
+  //   required String title,
+  //   required String subTitle,
+  //   required double total,
+  //   required String assest1,
+  //   String? assest2,
+  //   void Function()? onAsset1Tap,
+  //   void Function()? onAsset2Tap,
+  // }) {
+  //   return;
+  // }
 
   SizedBox nutrientsProgress({
     required Color color,
@@ -611,9 +618,10 @@ class HomeDasboardBody extends StatelessWidget {
   String greetingString() {
     var hour = DateTime.now().hour;
     String greet;
+    print(hour);
     if (hour > 4 && hour < 12) {
       greet = "Good Morning";
-    } else if (hour > 12 && hour < 4) {
+    } else if (hour > 12 && hour < 16) {
       greet = "Good Afternoon";
     } else {
       greet = "Good Evening";

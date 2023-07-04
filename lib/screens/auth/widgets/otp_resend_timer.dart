@@ -47,19 +47,19 @@ class OtpTimerState extends State<OtpTimer> {
             onPressed: widget.resendButtonCallback,
             child: Text(
               "Resend OTP",
-              style: p10_600WhiteTextStyle.copyWith(
+              style: p14_500WhiteTextStyle.copyWith(
                   decoration: TextDecoration.underline),
             ),
           )
         : RichText(
             text: TextSpan(
               text: "Resend OTP in ",
-              style: p10_400ParaTextStyle,
+              style: p10_400ParaTextStyle.copyWith(fontSize: 14),
               children: [
                 TextSpan(
                   text:
                       "00:${_secondsRemaining < 10 ? "0$_secondsRemaining" : _secondsRemaining}",
-                  style: p10_600WhiteTextStyle.copyWith(
+                  style: p14_500WhiteTextStyle.copyWith(
                       decoration: TextDecoration.underline),
                 )
               ],

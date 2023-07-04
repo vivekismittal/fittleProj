@@ -34,10 +34,10 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     if (fromPath == '/') {
       String? userId = await _sharedRepo.readUserId();
       String? profileId = await _sharedRepo.readProfileId();
-      bool? isComplete = await _sharedRepo.readProfileCompletionStatus();
+      var profileIndex = await _sharedRepo.readProfileIndex();
       if (userId != null) {
         routePath = ScreenPaths.profileCompletionScreenPath.name;
-        if (profileId != null && isComplete!=null && isComplete) {
+        if (profileId != null && profileIndex!=null && profileIndex==-1) {
           routePath = ScreenPaths.homeDashBoardPath.name;
         }
       }
