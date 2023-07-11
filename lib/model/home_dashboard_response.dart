@@ -2,10 +2,12 @@ class HomeDashBoardResponse {
   DietWorkoutDataModel? dietWorkoutData;
   List<BannerModel>? bannerData;
   bool? showPopupForWeight;
+  Map? targetData;
   HomeDashBoardResponse.fromJson(dynamic json) {
     dietWorkoutData = DietWorkoutDataModel.fromJson(json["diet_workout_data"]);
     bannerData = BannerModel().getBannerDataFrom(json["banner_data"]);
     showPopupForWeight = json["show_popup_for_weight"];
+    targetData = json["target_data"];
   }
 }
 
@@ -23,6 +25,7 @@ class DietWorkoutDataModel {
   double? calorieBurntTarget;
   int? waterTarget;
   int? waterIntake;
+
   DietWorkoutDataModel.fromJson(dynamic json) {
     targetCalorie = ((json["target_calorie"]) as dynamic).toDouble();
     targetFat = ((json["target_fat"]) as dynamic).toDouble();

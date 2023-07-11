@@ -112,9 +112,13 @@ class WorkoutSearchBody extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              exercise.exerciseName ?? "",
-                              style: p10_400BlackTextStyle,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                exercise.exerciseName ?? "",
+                                style: p10_400BlackTextStyle.copyWith(
+                                    fontSize: 14),
+                              ),
                             ),
                             const SizedBox(
                               height: 20,

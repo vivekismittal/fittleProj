@@ -33,10 +33,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         }
       case 1:
         return PlanScreen();
-         BlocProvider(
-          create: (context) => ProfileBloc(),
-          child: PlanScreen(),
-        );
 
       case 2:
         return

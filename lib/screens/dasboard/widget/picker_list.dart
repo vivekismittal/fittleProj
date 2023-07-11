@@ -1,6 +1,5 @@
 import 'package:fittle_ai/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../../../resources/resources.dart';
 
@@ -48,7 +47,6 @@ class PickFromList extends StatelessWidget {
       squeeze: 1,
       onSelectedItemChanged: (index) {
         selectedQty = Constant.quantities[index];
-        print(incomingQuantity);
         onSelect(selectedQty);
       },
       itemBuilder: (context, index) => Center(

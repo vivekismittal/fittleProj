@@ -33,6 +33,28 @@ class FoodTrackingBody extends StatelessWidget {
 
   DateTime selectedDate = DateTime.now();
 
+  int getCurrentTimeIndexForDayCard() {
+    DateTime currentTime = DateTime.now();
+    int hour = currentTime.hour;
+    int minute = currentTime.minute;
+
+    if (hour < 10 || hour == 10 && minute <= 0) {
+      return 0; // Breakfast
+    } else if (hour == 10 && minute > 0 ||
+        hour < 12 ||
+        (hour == 12 && minute <= 29)) {
+      return 1; // Morning Snack
+    } else if ((hour == 12 && minute >= 30) || (hour > 12 && hour < 15)) {
+      return 2; // Lunch
+    } else if (hour == 15 && minute <= 1 ||
+        hour < 19 ||
+        (hour == 19 && minute <= 0)) {
+      return 3; // Evening Snack
+    } else {
+      return 4; // Dinner
+    }
+  }
+
   final dayBreakList = [
     'Breakfast',
     'Morning Snack',
@@ -75,7 +97,7 @@ class FoodTrackingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    activeDayBreak = dayBreakList.first;
+    activeDayBreak = dayBreakList[getCurrentTimeIndexForDayCard()];
 
     return InternetConnectivityChecked(onTryAgain: () {
       fetchFoodTrackData(context, selectedDate, activeDayBreak);
@@ -110,13 +132,11 @@ class FoodTrackingBody extends StatelessWidget {
               break;
           }
 
-          print(selectedDate);
         },
         builder: (context, foodTrackState) {
           if (foodTrackState is! FoodTrackSuccessState) {
             return const SizedBox();
           }
-          print(selectedDate);
           return Column(
             children: [
               Container(
@@ -254,10 +274,8 @@ class FoodTrackingBody extends StatelessWidget {
                           key: UniqueKey(),
                           foodTileData: foodTrackData!.userFoodData![index],
                           onQuantityChange: (foodTileData) {
-                            debugPrint(".............");
                             foodTrackData?.userFoodData?[index] = foodTileData;
-                            debugPrint(
-                                "${foodTrackData?.userFoodData?[index].foodQuantity}");
+                       
                             setState(() {
                               isSaveBtnActive = true;
                             });
@@ -280,7 +298,6 @@ class FoodTrackingBody extends StatelessWidget {
                                       "");
                             } else if (optionIndex ==
                                 FoodTrackingOptions.delete.index) {
-                              debugPrint(index.toString());
                               showDeletePopUp(
                                   foodTrackData
                                           ?.userFoodData?[index].foodName ??
@@ -293,7 +310,6 @@ class FoodTrackingBody extends StatelessWidget {
                                 foodTrackData?.userFoodData?.removeAt(index);
 
                                 foodTrackData?.userFoodData?.forEach((element) {
-                                  debugPrint(element.foodName);
                                 });
                                 context.read<FoodTrackBloc>().add(
                                       FoodTrackDataDeleteEvent(
@@ -310,7 +326,6 @@ class FoodTrackingBody extends StatelessWidget {
                               reportDialogPopUp(
                                 context,
                                 (reportIssues) {
-                                  print(reportIssues);
                                   var foodId = foodTrackData
                                       ?.userFoodData?[index].foodId;
                                   var foodName = foodTrackData

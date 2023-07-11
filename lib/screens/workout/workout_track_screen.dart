@@ -88,7 +88,6 @@ class WorkoutTrackingBody extends StatelessWidget {
               message: state.message,
             );
           } else if (state is WorkoutTrackingFetchedState) {
-            print(isSaveBtnActive);
             return StatefulBuilder(
               key: UniqueKey(),
               builder: (context, setState) {
@@ -173,15 +172,15 @@ class WorkoutTrackingBody extends StatelessWidget {
                                       ),
                                       const Spacer(),
                                       const SizedBox(
-                                        height: 20,
-                                        width: 20,
+                                        height: 30,
+                                        width: 30,
                                         child: CircleAvatar(
                                           backgroundColor:
                                               AppColor.burntTargetProgressColor,
                                           foregroundColor: AppColor.whiteColor,
                                           child: Icon(
                                             Icons.add,
-                                            size: 14,
+                                            size: 20,
                                           ),
                                         ),
                                       ),
@@ -386,7 +385,6 @@ class WorkoutTrackingBody extends StatelessWidget {
       userExerciseData = data.first;
       isForEdit = data[1];
     }
-    print(isForEdit);
     if (isForEdit &&
         workoutTrackData?.userExerciseData != null &&
         userExerciseData != null) {

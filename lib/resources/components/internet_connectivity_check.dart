@@ -19,7 +19,6 @@ class _InternetConnectivityCheckedState
   late bool hasInternet = true;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // widget.onTryAgain();
     updateStatus();

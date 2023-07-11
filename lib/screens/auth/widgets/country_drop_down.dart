@@ -1,4 +1,3 @@
-import 'package:fittle_ai/resources/components/texts/custom_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../resources/app_color.dart';
@@ -24,7 +23,6 @@ class _CountryDropDownState extends State<CountryDropDown> {
   int? value = 0;
   @override
   void initState() {
-    // TODO: implement initState
     _countryCode = widget.countryCode;
     country = countries.first;
     super.initState();

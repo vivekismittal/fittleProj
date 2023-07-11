@@ -60,7 +60,6 @@ class ProfileBody extends StatelessWidget {
                           (profileState as ProfileFetchUserDataState).data;
                       break;
                     case ProfileErrorState:
-                      print(userData?.profileData?.email);
                       context.read<LoaderBloc>().add(DisabledLoadingEvent(
                           ScreenPaths.homeDashBoardPath.name));
                       Toast.show(
@@ -133,7 +132,7 @@ class ProfileBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             keyValueCard("Height",
-                                "${userData?.profileData?.height?.truncate()}ft ${(((userData?.profileData?.height ?? 0) - (userData?.profileData?.height?.truncate() ?? 0)) * 12).truncate()}in"),
+                                "${userData?.profileData?.height?.truncate()}ft ${(((userData?.profileData?.height ?? 0) - (userData?.profileData?.height?.truncate() ?? 0)) * 12).round()}in"),
                             keyValueCard("Weight",
                                 "${userData?.profileData?.weight?.toString()}kg"),
                             keyValueCard(
@@ -185,145 +184,125 @@ class ProfileBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 28),
                         WorkoutEditingButton(
-                            title: "Work Life Style",
-                            value: WorkLifeCycleModel.workLifeCycleOptions[
-                                    WorkLifeCycleModel.workLifeCycleOptions.keys
-                                        .firstWhere(
-                                  (element) =>
-                                      element.toLowerCase() ==
-                                      userData?.profileData?.workingLifestyle,
-                                )] ??
-                                "",
-                            onClick: () {
-                              showModalBottomSheet(
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (ctx) {
-                                  return ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                    child: Container(
-                                      color: AppColor.whiteColor,
-                                      padding: const EdgeInsets.all(22),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                              Text(
-                                                "Work Life Style",
-                                                style: p14_500BlackTextStyle,
-                                              ),
-                                              const SizedBox(height: 20),
-                                              const Divider(
-                                                  height: 1,
-                                                  color:
-                                                      AppColor.offBlackColor),
-                                              const SizedBox(height: 20),
-                                            ] +
-                                            List.generate(
-                                              WorkLifeCycleModel
-                                                  .workLifeCycleOptions.length,
-                                              (index) => InkWell(
-                                                onTap: () {
-                                                  var data = {
-                                                    "working_lifestyle":
-                                                        WorkLifeCycleModel
-                                                            .workLifeCycleOptions
-                                                            .keys
-                                                            .toList()[index]
-                                                            .toLowerCase()
-                                                  };
-                                                  userData?.profileData
-                                                          ?.workingLifestyle =
+                          title: "Work Life Style",
+                          value: WorkLifeCycleModel.workLifeCycleOptions[
+                                  WorkLifeCycleModel.workLifeCycleOptions.keys
+                                      .firstWhere(
+                                (element) =>
+                                    element.toLowerCase() ==
+                                    userData?.profileData?.workingLifestyle,
+                              )] ??
+                              "",
+                          onClick: () {
+                            showModalBottomSheet(
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (ctx) {
+                                return ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                  child: Container(
+                                    color: AppColor.whiteColor,
+                                    padding: const EdgeInsets.all(22),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                            Text(
+                                              "Work Life Style",
+                                              style: p14_500BlackTextStyle,
+                                            ),
+                                            const SizedBox(height: 20),
+                                            const Divider(
+                                                height: 1,
+                                                color: AppColor.offBlackColor),
+                                            const SizedBox(height: 20),
+                                          ] +
+                                          List.generate(
+                                            WorkLifeCycleModel
+                                                .workLifeCycleOptions.length,
+                                            (index) => InkWell(
+                                              onTap: () {
+                                                var data = {
+                                                  "working_lifestyle":
                                                       WorkLifeCycleModel
                                                           .workLifeCycleOptions
                                                           .keys
                                                           .toList()[index]
-                                                          .toLowerCase();
-                                                  context
-                                                      .read<ProfileBloc>()
-                                                      .add(
-                                                        ProfileCreatedUpdatedEvent(
-                                                          7,
-                                                          data,
-                                                          isProfileFinished:
-                                                              true,
-                                                          profileData: userData,
-                                                        ),
-                                                      );
-                                                  Navigator.pop(ctx);
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    color: userData?.profileData
-                                                                ?.workingLifestyle ==
-                                                            WorkLifeCycleModel
-                                                                .workLifeCycleOptions
-                                                                .keys
-                                                                .toList()[index]
-                                                                .toLowerCase()
-                                                        ? AppColor
-                                                            .progressBarColor
-                                                            .withOpacity(.15)
-                                                        : null,
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 10,
-                                                      horizontal: 6),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          text: WorkLifeCycleModel
+                                                          .toLowerCase()
+                                                };
+                                                userData?.profileData
+                                                        ?.workingLifestyle =
+                                                    WorkLifeCycleModel
+                                                        .workLifeCycleOptions
+                                                        .keys
+                                                        .toList()[index]
+                                                        .toLowerCase();
+                                                context.read<ProfileBloc>().add(
+                                                      ProfileCreatedUpdatedEvent(
+                                                        7,
+                                                        data,
+                                                        isProfileFinished: true,
+                                                        profileData: userData,
+                                                      ),
+                                                    );
+                                                Navigator.pop(ctx);
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  color: userData?.profileData
+                                                              ?.workingLifestyle ==
+                                                          WorkLifeCycleModel
                                                               .workLifeCycleOptions
                                                               .keys
-                                                              .toList()[index],
-                                                          style:
-                                                              p12_400BlackTitleTextStyle,
-                                                          children: [
-                                                            TextSpan(
-                                                              text:
-                                                                  "\n${WorkLifeCycleModel.workLifeCycleOptions.values.toList()[index]}",
-                                                              style:
-                                                                  p10_400OffBlackTextStyle,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        decoration:
-                                                            ShapeDecoration(
-                                                          shape:
-                                                              const CircleBorder(
-                                                            side: BorderSide(
-                                                              color: AppColor
-                                                                  .blackColor,
-                                                            ),
+                                                              .toList()[index]
+                                                              .toLowerCase()
+                                                      ? AppColor
+                                                          .progressBarColor
+                                                          .withOpacity(.15)
+                                                      : null,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10,
+                                                        horizontal: 6),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: WorkLifeCycleModel
+                                                            .workLifeCycleOptions
+                                                            .keys
+                                                            .toList()[index],
+                                                        style:
+                                                            p12_400BlackTitleTextStyle,
+                                                        children: [
+                                                          TextSpan(
+                                                            text:
+                                                                "\n${WorkLifeCycleModel.workLifeCycleOptions.values.toList()[index]}",
+                                                            style:
+                                                                p10_400OffBlackTextStyle,
                                                           ),
-                                                          color: userData
-                                                                      ?.profileData
-                                                                      ?.workingLifestyle ==
-                                                                  WorkLifeCycleModel
-                                                                      .workLifeCycleOptions
-                                                                      .keys
-                                                                      .toList()[
-                                                                          index]
-                                                                      .toLowerCase()
-                                                              ? AppColor
-                                                                  .progressBarColor
-                                                              : null,
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      decoration:
+                                                          ShapeDecoration(
+                                                        shape:
+                                                            const CircleBorder(
+                                                          side: BorderSide(
+                                                            color: AppColor
+                                                                .blackColor,
+                                                          ),
                                                         ),
-                                                        height: 20,
-                                                        width: 20,
-                                                        child: userData
+                                                        color: userData
                                                                     ?.profileData
                                                                     ?.workingLifestyle ==
                                                                 WorkLifeCycleModel
@@ -332,25 +311,41 @@ class ProfileBody extends StatelessWidget {
                                                                     .toList()[
                                                                         index]
                                                                     .toLowerCase()
-                                                            ? const Icon(
-                                                                Icons.done,
-                                                                color: AppColor
-                                                                    .whiteColor,
-                                                                size: 16,
-                                                              )
+                                                            ? AppColor
+                                                                .progressBarColor
                                                             : null,
-                                                      )
-                                                    ],
-                                                  ),
+                                                      ),
+                                                      height: 20,
+                                                      width: 20,
+                                                      child: userData
+                                                                  ?.profileData
+                                                                  ?.workingLifestyle ==
+                                                              WorkLifeCycleModel
+                                                                  .workLifeCycleOptions
+                                                                  .keys
+                                                                  .toList()[
+                                                                      index]
+                                                                  .toLowerCase()
+                                                          ? const Icon(
+                                                              Icons.done,
+                                                              color: AppColor
+                                                                  .whiteColor,
+                                                              size: 16,
+                                                            )
+                                                          : null,
+                                                    )
+                                                  ],
                                                 ),
                                               ),
                                             ),
-                                      ),
+                                          ),
                                     ),
-                                  );
-                                },
-                              );
-                            }),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
                         WorkoutEditingButton(
                             title: "Physical Acitivity Level",
                             value: userData?.profileData?.workoutlevel
@@ -526,7 +521,6 @@ class ProfileBody extends StatelessWidget {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               SelectableGoalGridTiles(
-                                                
                                                 goalModel: goalModel,
                                                 isFromProfileSetting: true,
                                                 onSelect: () {
@@ -664,50 +658,49 @@ class ProfileBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 14),
                         Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColor.whiteColor),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Action",
-                                style: p14_500BlackTextStyle,
-                              ),
-                              const SizedBox(height: 12),
-                              InkWell(
-                                onTap: () {
-                                  showLogoutPopUp(context, () {
-                                    Singleton().sharedRepo.clear();
-                                    context.read<NavigationBloc>().add(
-                                          ScreenPushedAndRemoveUntilEvent(
-                                              ScreenPaths
-                                                  .authLoginScreenPath.name,
-                                              "",
-                                              from: '/'),
-                                        );
-                                  });
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Logout",
-                                      style: p12_400GreyTextStyle,
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: AppColor.gray_1,
-                                    )
-                                  ],
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: AppColor.whiteColor),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Action",
+                                  style: p14_500BlackTextStyle,
                                 ),
-                              ),
-                            ],
-                          )
-                        ),
+                                const SizedBox(height: 12),
+                                InkWell(
+                                  onTap: () {
+                                    showLogoutPopUp(context, () {
+                                      Singleton().sharedRepo.clear();
+                                      context.read<NavigationBloc>().add(
+                                            ScreenPushedAndRemoveUntilEvent(
+                                                ScreenPaths
+                                                    .authLoginScreenPath.name,
+                                                "",
+                                                from: '/'),
+                                          );
+                                    });
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Logout",
+                                        style: p12_400GreyTextStyle,
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: AppColor.gray_1,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )),
                         const SizedBox(height: 22),
                       ],
                     );
@@ -797,7 +790,6 @@ class ProfileBody extends StatelessWidget {
             workoutlevel: profileData?.workoutlevel),
       ),
     ) as ProfileData?;
-    print(userData?.profileData?.email);
 
     if (updateProfileData != null) {
       var selectedYear =

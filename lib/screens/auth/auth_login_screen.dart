@@ -98,7 +98,6 @@ class AuthLoginBody extends StatelessWidget {
                   child: CountryDropDown(
                     onChanged: (val) {
                       countryCode = val;
-                      debugPrint(countryCode);
                     },
                     countryCode: countryCode,
                   ),

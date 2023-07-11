@@ -77,6 +77,7 @@ class GoalModel extends ProfilePageModel {
     }
     return {"profile_goal": goalsList};
   }
+  
 
   bool get isProceed {
     return _selectedOptions.isNotEmpty;

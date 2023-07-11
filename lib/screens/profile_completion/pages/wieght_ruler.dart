@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:fittle_ai/resources/app_color.dart';
 import '../../../resources/resources.dart';
 import 'package:fittle_ai/screens/profile_completion/screen_model.dart/profile_completion_data.dart';
 import 'package:flutter/material.dart';

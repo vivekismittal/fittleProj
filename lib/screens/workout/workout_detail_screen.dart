@@ -64,7 +64,6 @@ class WorkoutDetailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(exerciseMapData);
     context.read<WorkoutTrackBloc>().add(WorkoutDetailFetchedEvent(exerciseId));
     return BlocBuilder<WorkoutTrackBloc, WorkoutTrackingState>(
       builder: (context, state) {
@@ -84,7 +83,6 @@ class WorkoutDetailBody extends StatelessWidget {
         var exerciseData = state.exerciseDetail.exercisePageData;
 
         exerciseData?.exerciseKeys?.forEach((element) {
-          debugPrint("...$element....");
         });
         List<TextEditingController> textEditingControllers = [];
 
@@ -214,7 +212,6 @@ class WorkoutDetailBody extends StatelessWidget {
                           );
                         }
                         int sets = exerciseMapData?.values.first ?? 0;
-                        print(sets);
                         TextEditingController setEditingController =
                             TextEditingController(text: sets.toString());
                         textEditingControllers.add(setEditingController);

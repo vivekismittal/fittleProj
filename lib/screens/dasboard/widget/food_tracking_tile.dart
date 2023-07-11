@@ -26,7 +26,6 @@ class _FoodTrackingTileState extends State<FoodTrackingTile> {
   late UserFoodDatum foodTileData;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     foodTileData = widget.foodTileData;
   }

@@ -28,4 +28,6 @@ class AppColor {
   static const Color d6d6d6Color = Color(0xffd6d6d6);
   static const Color gray_1 = Color(0xff7B6F72);
   static const Color red = Color(0xffF50514);
+  static const Color overFlow = Color(0xffEE4B39);
+
 }

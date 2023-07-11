@@ -92,14 +92,14 @@ class EditProfileBody extends StatelessWidget {
                     if (fullName.isEmpty ||
                         email.isEmpty ||
                         !email.isValidEmail() ||
-                        (heightinInch == 0) ||
                         (heightinFt == 0) ||
                         (weight == 0)) {
                       Toast.show(context, "Please enter valid values");
                       return;
                     }
 
-                    double height = heightinFt + (heightinInch / 12);
+                    double height = heightinFt +
+                        double.parse((heightinInch / 12).toStringAsFixed(2));
 
                     userData.profileData?.dob = dob;
                     userData.profileData?.fullName = fullName;

@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth_bloc.dart';
 import '../../bloc/loader_bloc.dart';
 import '../../bloc/navigation_bloc.dart';
-import '../../resources/components/buttons/base_text_button.dart';
 import '../../resources/components/toast.dart';
 import '../../screens/common/custom_loader_screen.dart';
 import '../../utils/screen_paths.dart';

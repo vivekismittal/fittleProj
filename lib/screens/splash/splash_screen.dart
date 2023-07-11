@@ -15,15 +15,13 @@ class SplashScreen extends StatelessWidget {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
 
-    Timer(const Duration(seconds: 2), () async {
+    Timer(const Duration(seconds: 3), () async {
       var _sharedRepo = Singleton().sharedRepo;
       String? userId = await _sharedRepo.readUserId();
       String? profileId = await _sharedRepo.readProfileId();
       var routePath = ScreenPaths.authLoginScreenPath.name;
       int? profileIndex = await _sharedRepo.readProfileIndex();
-      print(userId);
-      print(profileId);
-      print(profileIndex);
+     
       if (userId != null) {
         routePath = ScreenPaths.profileCompletionScreenPath.name;
         if (profileId != null && profileIndex != null && profileIndex==-1) {

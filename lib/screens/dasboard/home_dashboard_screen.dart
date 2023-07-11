@@ -65,66 +65,9 @@ class HomeDasboardBody extends StatelessWidget {
               if (homeState is HomeDasboardSuccessState) {
                 if (homeData?.showPopupForWeight != null &&
                     homeData!.showPopupForWeight!) {
-                  TextEditingController weightController =
-                      TextEditingController();
-                  WidgetsBinding.instance
-                      .addPostFrameCallback((timeStamp) async {
-                    await showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (ctx) => AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        content: SizedBox(
-                          height: 44,
-                          child: FormInputField(
-                            label: InputFieldsLabel.normal,
-                            radius: 10,
-                            hintText: "Enter your current weight in kg",
-                            controller: weightController,
-                            style: p12_400BlackTitleTextStyle,
-                            contentPadding: const EdgeInsets.all(12),
-                            showCursor: true,
-                            cursorColor: AppColor.blackColor,
-                            hintStyle: p12_400GreyTextStyle,
-                            fillColor: AppColor.backgroundColor,
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                        actionsAlignment: MainAxisAlignment.spaceEvenly,
-                        actions: [
-                          GestureDetector(
-                            onTap: () {
-                              if (weightController.text.isNotEmpty &&
-                                  weightController.text.isDecimalNumeric()) {
-                                Navigator.of(context).pop();
-                                context.read<HomeDashboardBloc>().add(
-                                      HomeWeightUpdateEvent(
-                                          weightController.text,
-                                          "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
-                                    );
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColor.progressBarColor,
-                              ),
-                              height: 26,
-                              width: 78,
-                              child: Center(
-                                child: Text(
-                                  "Save",
-                                  style: m12_600WhiteTextStyle,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  });
+                  showPopForAskWeight(context, selectedDate);
+                } else if (homeData?.targetData != null) {
+                  showTargetBottomSheet(homeData, context);
                 }
                 return CustomScrollView(
                   slivers: [
@@ -233,30 +176,56 @@ class HomeDasboardBody extends StatelessWidget {
                                                 .foodInsightsScreenPath.name,
                                           );
                                         },
-                                        child: CircleAvatar(
-                                          backgroundColor: AppColor
-                                              .progressBarColor
-                                              .withOpacity(.1),
-                                          radius: 20,
-                                          child: SvgPicture.asset(
-                                            Constant.insightSvg,
-                                            fit: BoxFit.fill,
-                                            height: 20,
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor: AppColor
+                                                  .progressBarColor
+                                                  .withOpacity(.1),
+                                              radius: 20,
+                                              child: SvgPicture.asset(
+                                                Constant.insightSvg,
+                                                fit: BoxFit.fill,
+                                                height: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Insights",
+                                              style:
+                                                p8_500WhiteTextStyle.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                color:
+                                                    AppColor.progressBarColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       const SizedBox(
                                         width: 16,
                                       ),
-                                      CircleAvatar(
-                                          backgroundColor:
-                                              AppColor.progressBarColor,
-                                          radius: 20,
-                                          child: SvgPicture.asset(
-                                            Constant.foodTrackSvg,
-                                            height: 20,
-                                            fit: BoxFit.fill,
-                                          ))
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor:
+                                                AppColor.progressBarColor,
+                                            radius: 20,
+                                            child: SvgPicture.asset(
+                                              Constant.foodTrackSvg,
+                                              height: 20,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Track food",
+                                            style:
+                                                p8_500WhiteTextStyle.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColor.progressBarColor,
+                                            ),
+                                          )
+                                        ],
+                                      )
                                     ],
                                   ),
                                   // progressTracking(
@@ -386,7 +355,7 @@ class HomeDasboardBody extends StatelessWidget {
                                           children: [
                                             TextSpan(
                                                 text:
-                                                    " of ${homeData?.dietWorkoutData?.waterTarget ?? 0} Glasses\n",
+                                                    " of ${homeData?.dietWorkoutData?.waterTarget ?? 0} Water Glasses\n",
                                                 style: p10_400WhiteTextStyle),
                                             TextSpan(
                                                 text:
@@ -475,69 +444,91 @@ class HomeDasboardBody extends StatelessWidget {
                               );
                             },
                             child: Container(
-                              height: 78,
+                              // height: 78,
+                              padding: const EdgeInsets.all(16),
+
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: AppColor.whiteColor),
-                              child: Container(
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColor.whiteColor,
-                                ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 48,
-                                      height: 48,
-                                      child: CircleAvatar(
-                                        backgroundColor: AppColor
-                                            .burntTargetProgressColor
-                                            .withOpacity(0.2),
-                                        radius: 24,
-                                        child: Center(
-                                          child: SizedBox(
-                                            height: 28,
-                                            width: 28,
-                                            child: Image.asset(
-                                              Constant.pilatesPng,
-                                              color: AppColor
-                                                  .burntTargetProgressColor,
-                                            ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 48,
+                                    height: 48,
+                                    child: CircleAvatar(
+                                      backgroundColor: AppColor
+                                          .burntTargetProgressColor
+                                          .withOpacity(0.2),
+                                      radius: 24,
+                                      child: Center(
+                                        child: SizedBox(
+                                          height: 28,
+                                          width: 28,
+                                          child: Image.asset(
+                                            Constant.pilatesPng,
+                                            color: AppColor
+                                                .burntTargetProgressColor,
                                           ),
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 14),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: ((homeData?.dietWorkoutData
-                                                        ?.calorieBurntTarget ??
-                                                    0)
-                                                .round())
-                                            .toString(),
-                                        style: p14_500BlackTextStyle,
-                                        children: [
-                                          TextSpan(
-                                            text: " kcal",
-                                            style: p12_400BlackTitleTextStyle,
-                                          ),
-                                          TextSpan(
-                                            text: "\nCalories Target",
-                                            style: p8_400LBlackTextStyle,
-                                          ),
-                                        ],
-                                      ),
+                                  ),
+                                  const SizedBox(width: 14),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: ((homeData?.dietWorkoutData
+                                                      ?.calorieBurntTarget ??
+                                                  0)
+                                              .round())
+                                          .toString(),
+                                      style: p14_500BlackTextStyle,
+                                      children: [
+                                        TextSpan(
+                                          text: " kcal",
+                                          style: p12_400BlackTitleTextStyle,
+                                        ),
+                                        TextSpan(
+                                          text: "\nCalories Target",
+                                          style: p8_400LBlackTextStyle,
+                                        ),
+                                      ],
                                     ),
-                                    const Spacer(),
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          AppColor.burntTargetProgressColor,
-                                      radius: 14,
-                                      child: Image.asset(Constant.dumbbellPng),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  const Spacer(),
+                                  Column(
+                                    children: [
+                                      CircleAvatar(
+                                          backgroundColor:
+                                              AppColor.burntTargetProgressColor,
+                                          radius: 20,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0, vertical: 10),
+                                            child: SvgPicture.asset(
+                                              Constant.dumbell2Svg,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          )
+                                          // Image.asset(
+                                          //   Constant.dumbbellPng,
+                                          //   fit: BoxFit.fill,
+                                          //   filterQuality: FilterQuality.high,
+                                          //   height: 18,
+                                          //   width: 18,
+                                          //   // color: AppColor.blackColor,
+                                          // ),
+                                          ),
+                                      Text(
+                                        "Track Workout",
+                                        style: p8_500WhiteTextStyle.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              AppColor.burntTargetProgressColor,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
                           ),
@@ -556,6 +547,127 @@ class HomeDasboardBody extends StatelessWidget {
         onTryAgain: () {
           fetchHomeData(context, selectedDate);
         });
+  }
+
+  void showTargetBottomSheet(HomeDashBoardResponse? homeData, BuildContext context) {
+    Map targetData = homeData!.targetData!;
+    WidgetsBinding.instance
+        .addPostFrameCallback((timeStamp) async {
+      await showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (ctx) {
+          return ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            child: Container(
+              color: AppColor.whiteColor,
+              // height: 60,
+              padding: const EdgeInsets.all(22),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                      SizedBox(
+                        height: 100,
+                        child:
+                            Image.asset(Constant.targetGoalJpg),
+                      ),
+                      Text(
+                        "Your Calorie Target To Achieve Your Goals",
+                        style: m12_600LBlackTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ] +
+                    List.generate(
+                      targetData.length,
+                      (index) => Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 4),
+                        child: Text(
+                            "${targetData.keys.toList()[index]} : ${targetData.values.toList()[index]}",style: p12_400GreyTextStyle,),
+                      ),
+                    ),
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  void showPopForAskWeight(BuildContext context, DateTime selectedDate) {
+    TextEditingController weightController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Please Update your weight",
+                style: p14_500BlackTextStyle,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                height: 44,
+                child: FormInputField(
+                  label: InputFieldsLabel.normal,
+                  radius: 10,
+                  hintText: "Enter your current weight in kg",
+                  controller: weightController,
+                  style: p12_400BlackTitleTextStyle,
+                  contentPadding: const EdgeInsets.all(12),
+                  showCursor: true,
+                  cursorColor: AppColor.blackColor,
+                  hintStyle: p12_400GreyTextStyle,
+                  fillColor: AppColor.backgroundColor,
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                if (weightController.text.isNotEmpty &&
+                    weightController.text.isDecimalNumeric()) {
+                  Navigator.of(context).pop();
+                  context.read<HomeDashboardBloc>().add(
+                        HomeWeightUpdateEvent(weightController.text,
+                            "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
+                      );
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColor.progressBarColor,
+                ),
+                height: 40,
+                width: 90,
+                child: Center(
+                  child: Text(
+                    "Save",
+                    style: m12_600WhiteTextStyle.copyWith(fontSize: 14),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   // Row progressTracking({
@@ -618,7 +730,6 @@ class HomeDasboardBody extends StatelessWidget {
   String greetingString() {
     var hour = DateTime.now().hour;
     String greet;
-    print(hour);
     if (hour > 4 && hour < 12) {
       greet = "Good Morning";
     } else if (hour > 12 && hour < 16) {
@@ -682,7 +793,7 @@ class ProgressTracker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Progress Tracker",
+                "Weight Progress",
                 style: p12_400WhiteTextStyle,
               ),
               const SizedBox(height: 10),

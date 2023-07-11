@@ -77,9 +77,7 @@ class DateSlider extends StatelessWidget {
                     DateTime.now(),
                     (dateSelected) {
                       var currentDate = DateTime.now();
-                      dateSelected.year > dateSelected.year ||
-                              dateSelected.month > currentDate.month ||
-                              dateSelected.day > currentDate.day
+                      (dateSelected.compareTo(currentDate) > 0)
                           ? Toast.show(context, "Future Date not supported!")
                           : onDateChanged(dateSelected);
                     },
@@ -120,13 +118,17 @@ class DateSlider extends StatelessWidget {
         if (isDayBreakVisible)
           Container(
             color: AppColor.f9f9f9Color,
-            height: 50,
+            height: 80,
             child: ListView.builder(
+              controller: ScrollController(
+                initialScrollOffset:
+                    (124 * dayBreakList.indexOf(selectedDayBreak)) / 1,
+              ),
               scrollDirection: Axis.horizontal,
               itemCount: dayBreakList.length,
               itemBuilder: (context, index) => Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 child: dayBreakButton(
                   onClick: () {
                     if (onDayBreakChange != null) {
@@ -154,17 +156,18 @@ class DateSlider extends StatelessWidget {
         width: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
-          color: isActive ? color : null,
+          color: isActive ? color : AppColor.backgroundColor,
         ),
         // padding: const EdgeInsets.all(6),
         height: 50,
         child: Center(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               title,
-              style: isActive ? p8_500WhiteTextStyle.copyWith(fontSize: 10) : p8_400OffBlackTextStyle.copyWith(fontSize: 10),
+              style: isActive
+                  ? p8_500WhiteTextStyle.copyWith(fontSize: 10)
+                  : p8_400OffBlackTextStyle.copyWith(fontSize: 10),
             ),
           ),
         ),
@@ -180,28 +183,31 @@ class DateSlider extends StatelessWidget {
       Color color) {
     return Padding(
       padding: const EdgeInsets.only(right: 12),
-      child: InkWell(
-        onTap: () {
-          index + 1 > DateTime.now().day
-              ? Toast.show(context, "Future Date not supported!")
-              : onDateChanged(
-                  DateTime(selectedDate.year, selectedDate.month, index + 1));
-        },
-        child: Column(
-          children: [
-            Container(
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              DateTime(selectedDate.year, selectedDate.month, index + 1)
+                          .compareTo(DateTime.now()) >
+                      0
+                  ? Toast.show(context, "Future Date not supported!")
+                  : onDateChanged(DateTime(
+                      selectedDate.year, selectedDate.month, index + 1));
+            },
+            child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: selectedDate.day == index + 1
                       ? color
-                      : AppColor.whiteParaColor,
+                      : Color.fromARGB(255, 238, 240, 222),
+                  //  AppColor.whiteParaColor,
                   border: (DateTime.now().day == index + 1) &&
                           (DateTime.now().month == selectedDate.month) &&
                           (DateTime.now().year == selectedDate.year)
                       ? Border.all(color: color)
                       : null),
               // height: 46,
-              // width: 40,
+              width: 60,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,19 +232,19 @@ class DateSlider extends StatelessWidget {
                 ],
               ),
             ),
-            if ((DateTime.now().day == index + 1) &&
-                (DateTime.now().month == selectedDate.month) &&
-                (DateTime.now().year == selectedDate.year))
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Icon(
-                  Icons.circle,
-                  color: color,
-                  size: 4,
-                ),
-              )
-          ],
-        ),
+          ),
+          if ((DateTime.now().day == index + 1) &&
+              (DateTime.now().month == selectedDate.month) &&
+              (DateTime.now().year == selectedDate.year))
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Icon(
+                Icons.circle,
+                color: color,
+                size: 4,
+              ),
+            )
+        ],
       ),
     );
   }

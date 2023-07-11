@@ -54,179 +54,144 @@ class FoodDetailBody extends StatelessWidget {
   Widget build(BuildContext context) {
     FoodPageData foodData;
     return InternetConnectivityChecked(
-        onTryAgain: () {
-          context.read<FoodTrackBloc>().add(FoodDetailFetchedEvent(foodId));
-        },
-        child: Stack(
-          children: [
-            BlocBuilder<FoodTrackBloc, FoodTrackState>(
-              builder: (context, state) {
-                if (state is! FoodDetailFetchedState) {
-                  if (state is FoodDetailErrorState) {
-                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                      Toast.show(context, state.message);
-                    });
-                    return Center(
-                      child: IconButton(
-                        icon: const Icon(Icons.replay_outlined),
-                        onPressed: () {
-                          context
-                              .read<FoodTrackBloc>()
-                              .add(FoodDetailFetchedEvent(foodId));
-                        },
-                      ),
-                    );
-                  }
+      onTryAgain: () {
+        context.read<FoodTrackBloc>().add(FoodDetailFetchedEvent(foodId));
+      },
+      child:
+          BlocBuilder<FoodTrackBloc, FoodTrackState>(builder: (context, state) {
+        if (state is! FoodDetailFetchedState) {
+          if (state is FoodDetailErrorState) {
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              Toast.show(context, state.message);
+            });
+            return Center(
+              child: IconButton(
+                icon: const Icon(Icons.replay_outlined),
+                onPressed: () {
+                  context
+                      .read<FoodTrackBloc>()
+                      .add(FoodDetailFetchedEvent(foodId));
+                },
+              ),
+            );
+          }
 
-                  return Center(child: darkAppLoader());
-                } else {
-                  foodData = state.foodDetail.foodPageData ?? FoodPageData();
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: 260,
-                        width: double.infinity,
-                        child: foodData.foodImage == null ||
-                                foodData.foodImage!.isEmpty
-                            ? Image.asset(
-                                Constant.foodDetailPlaceholderPng,
-                                fit: BoxFit.fill,
-                              )
-                            : Image.network(
-                                foodData.foodImage!,
-                                fit: BoxFit.fill,
-                              ),
-                      ),
-                      StatefulBuilder(builder: (context, setState) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 18, horizontal: 22),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          foodData.foodName ?? "",
-                                          style: p14_500BlackTextStyle,
-                                          overflow: TextOverflow.clip,
-                                          maxLines: 2,
-                                        ),
-                                        Text(
-                                          "Nutritions Value",
-                                          style: p10_400LBlackTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          "${foodData.foodWeight} g",
-                                          style: p14_500BlackTextStyle,
-                                        ),
-                                        Text(
-                                          "${(foodData.foodCalorie ?? 0).round()} kcal",
-                                          style: p10_400LBlackTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 48),
-                              SizedBox(
-                                height: 200,
-                                child: PickFromList(
-                                  title: "Select the Quantity (in gm)",
-                                  incomingQuantity: foodData.foodWeight ?? 100,
-                                  onSelect: (selectedQuantity) {
-                                    updateValues(foodData, selectedQuantity);
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 56),
-                              Text(
-                                "Nutrients Breakdown",
-                                style: p14_500BlackTextStyle,
-                              ),
-                              const SizedBox(height: 28),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  NutrientsValue(
-                                    title: "Protein",
-                                    asset: Constant.proteinPng,
-                                    value: foodData.foodProtein ?? 0,
-                                  ),
-                                  NutrientsValue(
-                                    title: "Carbs",
-                                    asset: Constant.carbsPng,
-                                    value: foodData.foodCarbs ?? 0,
-                                  ),
-                                  NutrientsValue(
-                                    title: "Fat",
-                                    asset: Constant.fatPng,
-                                    value: foodData.foodFats ?? 0,
-                                  ),
-                                  NutrientsValue(
-                                    title: "Fibre",
-                                    asset: Constant.fibrePng,
-                                    value: foodData.foodFibre ?? 0,
-                                  ),
-                                ],
-                              ),
-                              // const Spacer(),
-                            ],
-                          ),
-                        );
-                      }),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          var data = UserFoodDatum(
-                            foodId: foodData.foodId,
-                            foodCalorie: foodData.foodCalorie,
-                            foodCarbs: foodData.foodCarbs,
-                            foodFat: foodData.foodFats,
-                            foodFibre: foodData.foodFibre,
-                            foodCategoryType: categoryType.toLowerCase(),
-                            foodName: foodData.foodName,
-                            foodProtein: foodData.foodProtein,
-                            foodQuantity: foodData.foodWeight,
-                          );
-                          Navigator.pop(context, data);
-                        },
-                        child: Container(
-                          height: 60,
-                          decoration: const BoxDecoration(
-                            gradient: Constant.backgroundGradient,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Add to $categoryType",
-                              style: p12_500WhiteTextStyle,
+          return Center(child: darkAppLoader());
+        }
+        foodData = state.foodDetail.foodPageData ?? FoodPageData();
+        return Stack(
+          children: [
+            ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                SizedBox(
+                  height: 260,
+                  width: double.infinity,
+                  child:
+                      foodData.foodImage == null || foodData.foodImage!.isEmpty
+                          ? Image.asset(
+                              Constant.foodDetailPlaceholderPng,
+                              fit: BoxFit.fill,
+                            )
+                          : Image.network(
+                              foodData.foodImage!,
+                              fit: BoxFit.fill,
                             ),
+                ),
+                StatefulBuilder(builder: (context, setState) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 18, horizontal: 22),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    foodData.foodName ?? "",
+                                    style: p14_500BlackTextStyle,
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 2,
+                                  ),
+                                  Text(
+                                    "Nutritions Value",
+                                    style: p10_400LBlackTextStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "${foodData.foodWeight} g",
+                                    style: p14_500BlackTextStyle,
+                                  ),
+                                  Text(
+                                    "${(foodData.foodCalorie ?? 0).round()} kcal",
+                                    style: p10_400LBlackTextStyle,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 48),
+                        SizedBox(
+                          height: 200,
+                          child: PickFromList(
+                            title: "Select the Quantity (in gm)",
+                            incomingQuantity: foodData.foodWeight ?? 100,
+                            onSelect: (selectedQuantity) {
+                              updateValues(foodData, selectedQuantity);
+                              setState(() {});
+                            },
                           ),
                         ),
-                      )
-                    ],
+                        const SizedBox(height: 56),
+                        Text(
+                          "Nutrients Breakdown",
+                          style: p14_500BlackTextStyle,
+                        ),
+                        const SizedBox(height: 28),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            NutrientsValue(
+                              title: "Protein",
+                              asset: Constant.proteinPng,
+                              value: foodData.foodProtein ?? 0,
+                            ),
+                            NutrientsValue(
+                              title: "Carbs",
+                              asset: Constant.carbsPng,
+                              value: foodData.foodCarbs ?? 0,
+                            ),
+                            NutrientsValue(
+                              title: "Fat",
+                              asset: Constant.fatPng,
+                              value: foodData.foodFats ?? 0,
+                            ),
+                            NutrientsValue(
+                              title: "Fibre",
+                              asset: Constant.fibrePng,
+                              value: foodData.foodFibre ?? 0,
+                            ),
+                          ],
+                        ),
+                        // const Spacer(),
+                      ],
+                    ),
                   );
-                }
-              },
+                }),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -242,9 +207,42 @@ class FoodDetailBody extends StatelessWidget {
                   color: AppColor.whiteColor,
                 ),
               ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: InkWell(
+                onTap: () {
+                  var data = UserFoodDatum(
+                    foodId: foodData.foodId,
+                    foodCalorie: foodData.foodCalorie,
+                    foodCarbs: foodData.foodCarbs,
+                    foodFat: foodData.foodFats,
+                    foodFibre: foodData.foodFibre,
+                    foodCategoryType: categoryType.toLowerCase(),
+                    foodName: foodData.foodName,
+                    foodProtein: foodData.foodProtein,
+                    foodQuantity: foodData.foodWeight,
+                  );
+                  Navigator.pop(context, data);
+                },
+                child: Container(
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    gradient: Constant.backgroundGradient,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Add to $categoryType",
+                      style: p12_500WhiteTextStyle,
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
-        ));
+        );
+      }),
+    );
   }
 
   void updateValues(FoodPageData foodData, int selectedQuantity) {

@@ -7,7 +7,6 @@ import 'package:fittle_ai/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/food_track_bloc.dart';
-import '../../resources/components/toast.dart';
 import '../../utils/screen_paths.dart';
 import '../common/custom_loader_screen.dart';
 

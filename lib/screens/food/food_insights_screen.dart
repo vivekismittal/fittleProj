@@ -57,6 +57,8 @@ class FoodInsightsBody extends StatelessWidget {
         buildWhen: (previous, current) => current is FoodInsightsFetchedState,
         builder: (context, state) {
           if (state is! FoodInsightsFetchedState) return const SizedBox();
+          var blockColor;
+          var blockNumber;
           final FoodInsightData insightData = state.foodInsightData;
           return SingleChildScrollView(
             child: Column(
@@ -105,41 +107,98 @@ class FoodInsightsBody extends StatelessWidget {
                         child: Row(
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(left: 28, right: 6),
-                              width: 60,
-                              child: Stack(
-                                children: [
-                                  Image.asset(
-                                    Constant.humanPng,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  ShaderMask(
-                                    shaderCallback: (Rect bounds) {
-                                      return LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        stops: [
-                                          (insightData.caloriePercentage ?? 0) /
-                                              100,
-                                          (insightData.caloriePercentage ?? 0) /
-                                              100,
-                                          1
-                                        ],
-                                        colors: const [
-                                          AppColor.ffae35Color,
-                                          Colors.transparent,
-                                          Colors.transparent,
-                                        ],
-                                      ).createShader(bounds);
+                                margin: const EdgeInsets.only(right: 8),
+                                width: 60,
+                                child: Column(
+                                  children: List.generate(
+                                    11,
+                                    (index) {
+                                      var color = AppColor.backgroundColor
+                                          .withOpacity(.25);
+
+                                      if (index == 0) {
+                                        var emoji;
+                                        var per =
+                                            insightData.caloriePercentage ?? 0;
+                                        if (per < 21)
+                                          emoji = Constant.face1Png;
+                                        else if (per < 61)
+                                          emoji = Constant.face2Png;
+                                        else if (per < 101)
+                                          emoji = Constant.face3Png;
+                                        else
+                                          emoji = Constant.face4Png;
+
+                                        if (per < 50)
+                                          blockColor = AppColor.ffae35Color;
+                                        else if (per <= 100)
+                                          blockColor =
+                                              AppColor.proteinGreenColor;
+                                        else
+                                          blockColor = AppColor.overFlow;
+                                        blockNumber = (per / 10).round();
+                                        // print(blockNumber);
+                                        return Expanded(
+                                          flex: 3,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Image.asset(
+                                              emoji,
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      index--;
+                                      // print(10 - index);
+                                      if ((10 - index) <= blockNumber) {
+                                        color = blockColor;
+                                      }
+                                      return Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 4),
+                                          color: color,
+                                        ),
+                                      );
                                     },
-                                    blendMode: BlendMode.darken,
-                                    child: Image.asset(
-                                      Constant.humanPng,
-                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                )
+                                // Stack(
+                                //   children: [
+                                //     Image.asset(
+                                //       Constant.humanPng,
+                                //       fit: BoxFit.cover,
+                                //     ),
+                                //     ShaderMask(
+                                //       shaderCallback: (Rect bounds) {
+                                //         return LinearGradient(
+                                //           begin: Alignment.bottomCenter,
+                                //           end: Alignment.topCenter,
+                                //           stops: [
+                                //             (insightData.caloriePercentage ?? 0) /
+                                //                 100,
+                                //             (insightData.caloriePercentage ?? 0) /
+                                //                 100,
+                                //             1
+                                //           ],
+                                //           colors: const [
+                                //             AppColor.ffae35Color,
+                                //             Colors.transparent,
+                                //             Colors.transparent,
+                                //           ],
+                                //         ).createShader(bounds);
+                                //       },
+                                //       blendMode: BlendMode.darken,
+                                //       child: Image.asset(
+                                //         Constant.humanPng,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                ),
                             Expanded(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

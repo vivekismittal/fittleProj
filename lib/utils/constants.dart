@@ -4,16 +4,13 @@ class Constant {
   ///svgs
   static const String splashSvg = "assets/svg/splash.svg";
   static const String whatsappSvg = "assets/svg/whatsApp.svg";
-  static const String foodTrackSvg =  "assets/svg/foodTrack.svg";
-  static const String glassSvg =  "assets/svg/glass.svg";
-  static const String dumbellSvg = "assets/svg/Dumbbell.svg";
+  static const String foodTrackSvg = "assets/svg/foodTrack.svg";
+  static const String glassSvg = "assets/svg/glass.svg";
   static const String homeSvg = "assets/svg/home.svg";
   static const String profileSvg = "assets/svg/profile.svg";
   static const String planSvg = "assets/svg/plan.svg";
-  static const String pillatesSvg = "assets/svg/pillates.svg";
   static const String insightSvg = "assets/svg/insight.svg";
-  static const String dissapointedEmojiSvg = "assets/svg/disappointed-face.svg";
-
+  static const String dumbell2Svg = "assets/svg/Dumbell2.svg";
 
   static const String musclePng = "assets/png/muscle.png";
   static const String pilatesPng = "assets/png/pilates.png";
@@ -32,11 +29,19 @@ class Constant {
       "assets/png/exercise_detail_placeholder.png";
   static const String dissapointedEmojiPng =
       "assets/png/emoji-disappointed.png";
+  static const String face1Png = "assets/png/face1.png";
+  static const String face2Png = "assets/png/face2.png";
+  static const String face3Png = "assets/png/face3.png";
+  static const String face4Png = "assets/png/face4.png";
+  static const String targetGoalJpg = "assets/png/targetGoal.jpg";
+
+
 
   ///lotties
   static const String loaderLottie = "assets/lotties/app-loader.json";
   static const String darkLoaderLottie = "assets/lotties/black_loader.json";
-  static const String successTicekLottie =  "assets/lotties/successful-tick.json";
+  static const String successTicekLottie =
+      "assets/lotties/successful-tick.json";
 
   ///Linear Gradient
   static const LinearGradient backgroundGradient = LinearGradient(
