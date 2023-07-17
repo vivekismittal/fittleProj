@@ -22,6 +22,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
     on<FoodTrackDataMoveCopyEvent>(_onFoodTrackDataMoveCopyEvent);
     on<FoodTrackDataDeleteEvent>(_onFoodTrackDataDeleteEvent);
     on<FoodTrackReportIssuesEvent>(_onFoodTrackReportIssuesEvent);
+    on<FoodReportMissingEvent>(_onFoodReportMissingEvent);
   }
 
   void _onFoodTrackDataMoveCopyEvent(
@@ -36,7 +37,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
       if (userId != null &&
           profileId != null &&
           profileIndex != null &&
-          profileIndex==-1) {
+          profileIndex == -1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -46,8 +47,9 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
           "is_move": event.isMove,
           "food_id": event.foodId,
         };
-        var (updatedFoodTrack,message) = await _foodTrackRepo.copyMoveFoodTrackData(data);
-        emit(FoodTrackSuccessState(updatedFoodTrack,false,message: message));
+        var (updatedFoodTrack, message) =
+            await _foodTrackRepo.copyMoveFoodTrackData(data);
+        emit(FoodTrackSuccessState(updatedFoodTrack, false, message: message));
       }
     } catch (e) {
       addError(e);
@@ -67,7 +69,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
       if (userId != null &&
           profileId != null &&
           profileIndex != null &&
-          profileIndex==-1) {
+          profileIndex == -1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -84,6 +86,34 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
     }
   }
 
+  void _onFoodReportMissingEvent(
+    FoodReportMissingEvent event,
+    Emitter emit,
+  ) async {
+    // emit(FoodTrackLoadingState());
+    try {
+      var userId = await sharedRepo.readUserId();
+      var profileId = await sharedRepo.readProfileId();
+      var profileIndex = await sharedRepo.readProfileIndex();
+      if (userId != null &&
+          profileId != null &&
+          profileIndex != null &&
+          profileIndex == -1) {
+        var data = {
+          "user_id": userId,
+          "profile_id": profileId,
+          "food_or_exercise_name": event.foodName,
+          "type": "food"
+        };
+        var _ = await _foodTrackRepo.reportMissingFoodWorkout(data);
+        // emit(FoodSearchErrorState(message));
+      }
+    } catch (e) {
+      addError(e);
+      emit(FoodSearchErrorState(e.toString()));
+    }
+  }
+
   void _onFoodTrackDataDeleteEvent(
     FoodTrackDataDeleteEvent event,
     Emitter emit,
@@ -96,7 +126,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
       if (userId != null &&
           profileId != null &&
           profileIndex != null &&
-          profileIndex==-1) {
+          profileIndex == -1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -106,7 +136,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
           "is_delete": true,
         };
         var message = await _foodTrackRepo.deleteFoodTrackData(data);
-        emit(FoodTrackSuccessState(event.updatedData,true,message: message));
+        emit(FoodTrackSuccessState(event.updatedData, true, message: message));
       }
     } catch (e) {
       addError(e);
@@ -126,7 +156,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
       if (userId != null &&
           profileId != null &&
           profileIndex != null &&
-          profileIndex==-1) {
+          profileIndex == -1) {
         var foodRawData = event.updatedFoodTrack.toJsonForUpdate();
 
         var data = {
@@ -138,7 +168,8 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
         };
 
         var message = await _foodTrackRepo.updateFoodTrackData(data);
-        emit(FoodTrackSuccessState(event.updatedFoodTrack,true,message: message));
+        emit(FoodTrackSuccessState(event.updatedFoodTrack, true,
+            message: message));
       }
     } catch (e) {
       addError(e);
@@ -181,7 +212,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
       if (userId != null &&
           profileId != null &&
           profileIndex != null &&
-          profileIndex==-1) {
+          profileIndex == -1) {
         var data = {
           "user_id": userId,
           "profile_id": profileId,
@@ -189,7 +220,7 @@ class FoodTrackBloc extends Bloc<FoodTrackEvent, FoodTrackState> {
           "category_type": event.categoryType
         };
         var foodTrackData = await _foodTrackRepo.getCategoryWiseFoodData(data);
-        emit(FoodTrackSuccessState(foodTrackData,false));
+        emit(FoodTrackSuccessState(foodTrackData, false));
       }
     } catch (e) {
       addError(e);

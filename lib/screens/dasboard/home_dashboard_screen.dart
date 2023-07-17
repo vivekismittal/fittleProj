@@ -86,9 +86,13 @@ class HomeDasboardBody extends StatelessWidget {
                               isDayBreakVisible: false,
                             ),
                             const SizedBox(height: 30),
-                            HorizontalCardPager(
-                                bannerData: homeData?.bannerData ?? []),
-                            const SizedBox(height: 28),
+                            if (homeData?.bannerData != null &&
+                                homeData!.bannerData!.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 30),
+                                child: HorizontalCardPager(
+                                    bannerData: homeData?.bannerData ?? []),
+                              ),
                           ],
                         ),
                       ),
@@ -192,7 +196,7 @@ class HomeDasboardBody extends StatelessWidget {
                                             Text(
                                               "Insights",
                                               style:
-                                                p8_500WhiteTextStyle.copyWith(
+                                                  p8_500WhiteTextStyle.copyWith(
                                                 fontWeight: FontWeight.w500,
                                                 color:
                                                     AppColor.progressBarColor,
@@ -549,10 +553,10 @@ class HomeDasboardBody extends StatelessWidget {
         });
   }
 
-  void showTargetBottomSheet(HomeDashBoardResponse? homeData, BuildContext context) {
+  void showTargetBottomSheet(
+      HomeDashBoardResponse? homeData, BuildContext context) {
     Map targetData = homeData!.targetData!;
-    WidgetsBinding.instance
-        .addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -571,8 +575,7 @@ class HomeDasboardBody extends StatelessWidget {
                 children: [
                       SizedBox(
                         height: 100,
-                        child:
-                            Image.asset(Constant.targetGoalJpg),
+                        child: Image.asset(Constant.targetGoalJpg),
                       ),
                       Text(
                         "Your Calorie Target To Achieve Your Goals",
@@ -584,10 +587,11 @@ class HomeDasboardBody extends StatelessWidget {
                     List.generate(
                       targetData.length,
                       (index) => Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 4),
+                        padding: EdgeInsets.symmetric(vertical: 4),
                         child: Text(
-                            "${targetData.keys.toList()[index]} : ${targetData.values.toList()[index]}",style: p12_400GreyTextStyle,),
+                          "${targetData.keys.toList()[index]} : ${targetData.values.toList()[index]}",
+                          style: p12_400GreyTextStyle,
+                        ),
                       ),
                     ),
               ),

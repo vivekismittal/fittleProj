@@ -15,6 +15,12 @@ class WorkoutSearchedEvent extends WorkoutTrackingEvent {
   WorkoutSearchedEvent({this.keyword, this.isFrequent = false});
 }
 
+class WorkoutReportMissingEvent extends WorkoutTrackingEvent {
+  final String? workoutName;
+
+  WorkoutReportMissingEvent(this.workoutName);
+}
+
 class WorkoutDetailFetchedEvent extends WorkoutTrackingEvent {
   final String exerciseId;
 

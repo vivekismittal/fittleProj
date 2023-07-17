@@ -82,8 +82,7 @@ class WorkoutDetailBody extends StatelessWidget {
         }
         var exerciseData = state.exerciseDetail.exercisePageData;
 
-        exerciseData?.exerciseKeys?.forEach((element) {
-        });
+        exerciseData?.exerciseKeys?.forEach((element) {});
         List<TextEditingController> textEditingControllers = [];
 
         return Column(
@@ -114,19 +113,22 @@ class WorkoutDetailBody extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 160,
+                    Container(
                       width: double.infinity,
-                      child: exerciseData?.exerciseImage == null ||
-                              exerciseData!.exerciseImage!.isEmpty
-                          ? Image.asset(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image.network(
+                          exerciseData?.exerciseImage ?? "",
+                          fit: BoxFit.fitWidth,
+                          filterQuality: FilterQuality.high,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
                               Constant.exerciseDetailPlaceholder,
-                              fit: BoxFit.fill,
-                            )
-                          : Image.network(
-                              exerciseData.exerciseImage!,
-                              fit: BoxFit.fill,
-                            ),
+                              fit: BoxFit.fitWidth,
+                            );
+                          },
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Row(

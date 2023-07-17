@@ -36,4 +36,5 @@ abstract class AppUrls {
   static final deleteFoodTrackUrl= "$baseUrl/user/api/delete-category-food/";
   static final reportIssuesUrl = "$baseUrl/user/api/report-issue/";
   static final deleteWorkoutTrackUrl = "$baseUrl/user/api/delete-exercise-data/";
+  static final missingFoodWorkoutUrl="$searchBaseUrl/missing/add-food-exercise-data/";
 }

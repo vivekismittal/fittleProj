@@ -18,6 +18,12 @@ class FoodSearchedEvent extends FoodTrackEvent {
   FoodSearchedEvent({this.foodKeyword, this.isFrequent = false});
 }
 
+class FoodReportMissingEvent extends FoodTrackEvent {
+  final String? foodName;
+
+  FoodReportMissingEvent(this.foodName);
+}
+
 class FoodDetailFetchedEvent extends FoodTrackEvent {
   final String foodId;
 
@@ -59,14 +65,15 @@ class FoodTrackDataDeleteEvent extends FoodTrackEvent {
     this.date,
     this.categoryTypeFrom,
     this.foodId,
-    this.isDelete, this.updatedData,
+    this.isDelete,
+    this.updatedData,
   );
 }
-class FoodTrackReportIssuesEvent extends FoodTrackEvent{
+
+class FoodTrackReportIssuesEvent extends FoodTrackEvent {
   final String foodId;
   final String foodName;
   final List<String> reportIssues;
 
   FoodTrackReportIssuesEvent(this.foodId, this.foodName, this.reportIssues);
 }
-

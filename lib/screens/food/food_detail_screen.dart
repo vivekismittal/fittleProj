@@ -85,18 +85,18 @@ class FoodDetailBody extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 SizedBox(
-                  height: 260,
                   width: double.infinity,
-                  child:
-                      foodData.foodImage == null || foodData.foodImage!.isEmpty
-                          ? Image.asset(
-                              Constant.foodDetailPlaceholderPng,
-                              fit: BoxFit.fill,
-                            )
-                          : Image.network(
-                              foodData.foodImage!,
-                              fit: BoxFit.fill,
-                            ),
+                  child: Image.network(
+                    foodData.foodImage ?? "",
+                    fit: BoxFit.fitWidth,
+                    filterQuality: FilterQuality.high,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        Constant.foodDetailPlaceholderPng,
+                        fit: BoxFit.fitWidth,
+                      );
+                    },
+                  ),
                 ),
                 StatefulBuilder(builder: (context, setState) {
                   return Padding(

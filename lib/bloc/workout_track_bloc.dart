@@ -16,6 +16,35 @@ class WorkoutTrackBloc
     on<WorkoutDetailFetchedEvent>(_onWorkoutDetailFetchedEvent);
     on<PostUpdatedWorkoutTrackEvent>(_onPostUpdatedWorkoutTrackEvent);
     on<WorkoutTrackDeleteEvent>(_onWorkoutTrackDeleteEvent);
+    on<WorkoutReportMissingEvent>(_onWorkoutReportMissingEvent);
+  }
+
+  void _onWorkoutReportMissingEvent(
+    WorkoutReportMissingEvent event,
+    Emitter emit,
+  ) async {
+    // emit(FoodTrackLoadingState());
+    try {
+      var userId = await sharedRepo.readUserId();
+      var profileId = await sharedRepo.readProfileId();
+      var profileIndex = await sharedRepo.readProfileIndex();
+      if (userId != null &&
+          profileId != null &&
+          profileIndex != null &&
+          profileIndex == -1) {
+        var data = {
+          "user_id": userId,
+          "profile_id": profileId,
+          "food_or_exercise_name": event.workoutName,
+          "type": "exercise"
+        };
+        var _ = await _workoutTrackRepo.reportMissingFoodWorkout(data);
+        // emit(FoodSearchErrorState(message));
+      }
+    } catch (e) {
+      addError(e);
+      emit(WorkoutSearchedErrorState(e.toString()));
+    }
   }
   void _onWorkoutDetailFetchedEvent(
     WorkoutDetailFetchedEvent event,

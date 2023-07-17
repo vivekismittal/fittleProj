@@ -10,8 +10,8 @@ class WorkoutTrackRepo {
   final BaseApiServices _apiServices = NetworkApiService();
 
   Future<WorkoutTrackData> fetchWorkoutTrackData(dynamic data) async {
-    dynamic response =
-        await _apiServices.postApiResponse(AppUrls.getWorkoutTrackDataUrl,data);
+    dynamic response = await _apiServices.postApiResponse(
+        AppUrls.getWorkoutTrackDataUrl, data);
     try {
       return WorkoutTrackData.fromJson(response);
     } catch (e) {
@@ -40,8 +40,7 @@ class WorkoutTrackRepo {
     }
   }
 
-   Future<WorkoutDetailData> getWorkoutDetailData(
-      dynamic data) async {
+  Future<WorkoutDetailData> getWorkoutDetailData(dynamic data) async {
     dynamic response = await _apiServices
         .postApiResponse(AppUrls.getWorkoutDetailDataUrl, data, isSearch: true);
     try {
@@ -50,10 +49,10 @@ class WorkoutTrackRepo {
       rethrow;
     }
   }
-     Future<String> updateWorkoutTrack(
-      dynamic data) async {
-    dynamic response = await _apiServices
-        .postApiResponse(AppUrls.updateWorkoutTrackUrl, data);
+
+  Future<String> updateWorkoutTrack(dynamic data) async {
+    dynamic response =
+        await _apiServices.postApiResponse(AppUrls.updateWorkoutTrackUrl, data);
     try {
       return response["message"];
     } catch (e) {
@@ -61,10 +60,19 @@ class WorkoutTrackRepo {
     }
   }
 
-  Future<String> deleteWorkoutTrack(
-      dynamic data) async {
-    dynamic response = await _apiServices
-        .postApiResponse(AppUrls.deleteWorkoutTrackUrl, data);
+  Future<String> deleteWorkoutTrack(dynamic data) async {
+    dynamic response =
+        await _apiServices.postApiResponse(AppUrls.deleteWorkoutTrackUrl, data);
+    try {
+      return response["message"];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+ Future<String> reportMissingFoodWorkout(dynamic data) async {
+    dynamic response =
+        await _apiServices.postApiResponse(AppUrls.missingFoodWorkoutUrl, data,isSearch: true);
     try {
       return response["message"];
     } catch (e) {

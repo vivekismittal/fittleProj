@@ -70,16 +70,18 @@ class FoodTrackRepo {
     }
   }
 
-  Future<(FoodTrackingData,String?)> copyMoveFoodTrackData(dynamic data) async {
+  Future<(FoodTrackingData, String?)> copyMoveFoodTrackData(
+      dynamic data) async {
     dynamic response =
         await _apiServices.postApiResponse(AppUrls.copyMoveFoodTrackUrl, data);
     try {
       String message = response["message"];
-     FoodTrackingData data =  FoodTrackingData.fromJson(response["updated_list_data"]);
-      return (data,message);
+      FoodTrackingData data =
+          FoodTrackingData.fromJson(response["updated_list_data"]);
+      return (data, message);
     } catch (e) {
       rethrow;
-    } 
+    }
   }
 
   Future<String> deleteFoodTrackData(dynamic data) async {
@@ -95,6 +97,16 @@ class FoodTrackRepo {
   Future<String> reportIssues(dynamic data) async {
     dynamic response =
         await _apiServices.postApiResponse(AppUrls.reportIssuesUrl, data);
+    try {
+      return response["message"];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> reportMissingFoodWorkout(dynamic data) async {
+    dynamic response =
+        await _apiServices.postApiResponse(AppUrls.missingFoodWorkoutUrl, data,isSearch: true);
     try {
       return response["message"];
     } catch (e) {

@@ -15,7 +15,7 @@ class NetworkApiService extends BaseApiServices {
   @override
   Future postApiResponse(String url, dynamic data,
       {bool isSearch = false}) async {
-    debugPrint("request body:: $data");
+    debugPrint("request body:: $data \n on uri:: $url");
     dynamic responseJson;
     try {
       http.Response response =
