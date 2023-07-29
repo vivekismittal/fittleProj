@@ -78,6 +78,7 @@ class NetworkApiService extends BaseApiServices {
             message: (message is String) ? message : message[0]);
 
       default:
+      
         throw ServerException(
             message: "///Server Error ${response.statusCode}///");
     }

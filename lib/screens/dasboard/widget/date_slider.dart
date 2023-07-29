@@ -37,7 +37,7 @@ class DateSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScrollController controller =
-        ScrollController(initialScrollOffset: (selectedDate.day - 3) * 52);
+        ScrollController(initialScrollOffset: (selectedDate.day - 3) * 68);
     String subTitle = getMMMYYYY(selectedDate);
     int totalDays = DateTime(selectedDate.year, selectedDate.month + 1, 0).day;
     return Column(

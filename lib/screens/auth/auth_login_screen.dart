@@ -50,195 +50,219 @@ class AuthLoginBody extends StatelessWidget {
     GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 34),
-      child: Form(
-        key: loginFormKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "👋  Welcome",
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.primary),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              "Let's Take Your\nFirst Step",
-              style: m24_600WhiteTextStyle,
-            ),
-            const SizedBox(height: 8),
-            RichText(
-              text: TextSpan(
-                text:
-                    "To get started, please enter your phone number.\nWe will send you the ",
-                style: p12_400WhiteTextStyle.copyWith(
-                  color: theme.colorScheme.secondary,
-                ),
-                children: [
-                  TextSpan(
-                    text: "6 digit",
-                    style:p12_400WhiteTextStyle.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const TextSpan(
-                    text: " verification code",
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 36),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      padding: const EdgeInsets.only(top: 80, left: 34,right: 34),
+      child: Stack(
+        children: [
+          Form(
+            key: loginFormKey,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 100,
-                  child: CountryDropDown(
-                    onChanged: (val) {
-                      countryCode = val;
-                    },
-                    countryCode: countryCode,
+                Text(
+                  "👋  Welcome",
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(color: theme.colorScheme.primary),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  "Let's Take Your\nFirst Step",
+                  style: m24_600WhiteTextStyle,
+                ),
+                const SizedBox(height: 8),
+                RichText(
+                  text: TextSpan(
+                    text:
+                        "To get started, please enter your phone number.\nWe will send you the ",
+                    style: p12_400WhiteTextStyle.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "6 digit",
+                        style: p12_400WhiteTextStyle.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: " verification code",
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: SizedBox(
-                    height: 72,
-                    child: FormInputField(
-                      label: InputFieldsLabel.mobile,
-                      controller: mobileEditingController,
-                      style: theme.textTheme.labelLarge,
-                      keyboardType: TextInputType.number,
-                      contentPadding: const EdgeInsets.all(10),
-                      hintText: "Enter your phone number",
-                      hintStyle: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColor.whiteParaColor.withOpacity(.85)),
-                      onChanged: (value) {
-                        proceedButtonEvent(
-                            emitEventFunc: emitEventFunc,
-                            loginFormKey: loginFormKey);
+                const SizedBox(height: 36),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: CountryDropDown(
+                        onChanged: (val) {
+                          countryCode = val;
+                        },
+                        countryCode: countryCode,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: SizedBox(
+                        height: 72,
+                        child: FormInputField(
+                          label: InputFieldsLabel.mobile,
+                          controller: mobileEditingController,
+                          style: theme.textTheme.labelLarge,
+                          keyboardType: TextInputType.number,
+                          contentPadding: const EdgeInsets.all(10),
+                          hintText: "Enter your phone number",
+                          hintStyle: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColor.whiteParaColor.withOpacity(.85)),
+                          onChanged: (value) {
+                            proceedButtonEvent(
+                                emitEventFunc: emitEventFunc,
+                                loginFormKey: loginFormKey);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                loginCheckBox(
+                  [
+                    Expanded(
+                      child: Wrap(
+                        children: [
+                          Text(
+                            "Receive updates and reminders on ",
+                            style: p12_400WhiteTextStyle,
+                          ),
+                          SvgPicture.asset(Constant.whatsappSvg),
+                          Text(" whatsapp",
+                              style: p12_400WhiteTextStyle,
+                              overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onChecked: (value) {
+                    isWhatsappChecked = value;
+                  },
+                  value: isWhatsappChecked,
+                ),
+                loginCheckBox(
+                  [
+                    Expanded(
+                      child: Wrap(
+                        children: [
+                          Text(
+                            "By signing up, I agree to the ",
+                            style: p12_400WhiteTextStyle,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, ScreenPaths.webViewScreen.name,
+                                  arguments:
+                                      "https://www.fittle.ai/terms-and-conditions");
+                            },
+                            child: Text("Terms of Service",
+                                style: p12_400WhiteTextStyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.underline,
+                                )),
+                          ),
+                          Text(
+                            " and ",
+                            style: p12_400WhiteTextStyle,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, ScreenPaths.webViewScreen.name,
+                                  arguments:
+                                      "https://www.fittle.ai/privacy-policy");
+                            },
+                            child: Text(
+                              "Privacy Policy",
+                              style: p12_400WhiteTextStyle.copyWith(
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                  onChecked: (value) {
+                    isTncChecked = value;
+                    proceedButtonEvent(
+                        emitEventFunc: emitEventFunc, loginFormKey: loginFormKey);
+                  },
+                  value: isTncChecked,
+                ),
+                
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom:20.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+                    child: BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, authState) {
+                        switch (authState.runtimeType) {
+                          case AuthOtpSentState:
+                            context.read<LoaderBloc>().add(DisabledLoadingEvent(
+                                ScreenPaths.authLoginScreenPath.name));
+                            context.read<NavigationBloc>().add(ScreenPushedEvent(
+                                ScreenPaths.authVerifyScreenPath.name,
+                                arguments:
+                                    countryCode + mobileEditingController.text));
+                            break;
+                          case AuthLoginLoadingState:
+                            context.read<LoaderBloc>().add(EnabledLoadingEvent(
+                                ScreenPaths.authLoginScreenPath.name));
+                            break;
+                          case AuthLoginErrorState:
+                            context.read<LoaderBloc>().add(DisabledLoadingEvent(
+                                ScreenPaths.authLoginScreenPath.name));
+                            Toast.show(
+                                context, (authState as AuthLoginErrorState).message);
+                            break;
+                          default:
+                            break;
+                        }
+                      },
+                      builder: (context, authState) {
+                        return customButton(
+                          title: "Agree & Proceed".toUpperCase(),
+                          context: context,
+                          isEnabled: isProceedButtonEnabled,
+                          onPressed: () {
+                            onAgreeAndProceed(
+                              emitEventFunc: emitEventFunc,
+                            );
+                          },
+                          minWidth: 165,
+                        );
+                      },
+                      buildWhen: (previous, current) {
+                        if (current is ProceedButtonEnabled &&
+                            !isProceedButtonEnabled) {
+                          isProceedButtonEnabled = true;
+                          return true;
+                        } else if (current is ProceedButtonDisabled &&
+                            isProceedButtonEnabled) {
+                          isProceedButtonEnabled = false;
+                          return true;
+                        }
+                        return false;
                       },
                     ),
                   ),
-                ),
-              ],
-            ),
-            loginCheckBox(
-              [
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      Text(
-                        "Receive updates and reminders on ",
-                        style: p12_400WhiteTextStyle,
-                      ),
-                      SvgPicture.asset(Constant.whatsappSvg),
-                      Text(" whatsapp",
-                          style: p12_400WhiteTextStyle,
-                          overflow: TextOverflow.ellipsis),
-                    ],
-                  ),
-                ),
-              ],
-              onChecked: (value) {
-                isWhatsappChecked = value;
-              },
-              value: isWhatsappChecked,
-            ),
-            loginCheckBox(
-              [
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      Text(
-                        "By signing up, I agree to the ",
-                        style: p12_400WhiteTextStyle,
-                      ),
-                      Text("Terms of Service",
-                          style: p12_400WhiteTextStyle.copyWith(
-                            fontWeight: FontWeight.w600,
-                            decoration: TextDecoration.underline,
-                          )),
-                      Text(
-                        " and ",
-                        style: p12_400WhiteTextStyle,
-                      ),
-                      Text(
-                        "Privacy Policy",
-                        style: p12_400WhiteTextStyle.copyWith(
-                          fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-              onChecked: (value) {
-                isTncChecked = value;
-                proceedButtonEvent(
-                    emitEventFunc: emitEventFunc, loginFormKey: loginFormKey);
-              },
-              value: isTncChecked,
-            ),
-            const Spacer(),
-            Center(
-              child: BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, authState) {
-                  switch (authState.runtimeType) {
-                    case AuthOtpSentState:
-                    context.read<LoaderBloc>().add(DisabledLoadingEvent(
-                          ScreenPaths.authLoginScreenPath.name));
-                      context.read<NavigationBloc>().add(ScreenPushedEvent(
-                          ScreenPaths.authVerifyScreenPath.name,
-                          arguments:
-                              countryCode + mobileEditingController.text));
-                      break;
-                    case AuthLoginLoadingState:
-                      context.read<LoaderBloc>().add(EnabledLoadingEvent(
-                          ScreenPaths.authLoginScreenPath.name));
-                      break;
-                    case AuthLoginErrorState:
-                      context.read<LoaderBloc>().add(DisabledLoadingEvent(
-                          ScreenPaths.authLoginScreenPath.name));
-                      Toast.show(
-                          context, (authState as AuthLoginErrorState).message);
-                      break;
-                    default:
-                      break;
-                  }
-                },
-                builder: (context, authState) {
-                  return customButton(
-                    title: "Agree & Proceed".toUpperCase(),
-                    context: context,
-                    isEnabled: isProceedButtonEnabled,
-                    onPressed: () {
-                      onAgreeAndProceed(
-                        emitEventFunc: emitEventFunc,
-                      );
-                    },
-                    minWidth: 165,
-                  );
-                },
-                buildWhen: (previous, current) {
-                  if (current is ProceedButtonEnabled &&
-                      !isProceedButtonEnabled) {
-                    isProceedButtonEnabled = true;
-                    return true;
-                  } else if (current is ProceedButtonDisabled &&
-                      isProceedButtonEnabled) {
-                    isProceedButtonEnabled = false;
-                    return true;
-                  }
-                  return false;
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -248,15 +272,14 @@ class AuthLoginBody extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        
             // ignore: unnecessary_cast
             StatefulBuilder(
               builder: (context, setState) => Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: Checkbox(
-                  visualDensity: VisualDensity(horizontal: -4,vertical: -4),
+                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
                     checkColor: AppColor.callToActionColor,
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                    materialTapTargetSize: MaterialTapTargetSize.padded,
                     fillColor: MaterialStateProperty.resolveWith<Color>(
                         (Set<MaterialState> states) {
                       return AppColor.whiteColor;

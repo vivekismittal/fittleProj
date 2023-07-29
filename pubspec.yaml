@@ -45,6 +45,7 @@ dependencies:
   fl_chart: ^0.63.0
   flutter_dotenv: ^5.1.0
   flutter_launcher_icons: ^0.13.1
+  webview_flutter: ^4.2.2
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +54,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/png/app_icon.png"
+  image_path: "assets/png/appIcon.jpg"
   adaptive_icon_background: "#ffffff"
 
   # The "flutter_lints" package below contains a set of recommended lints to

@@ -104,15 +104,13 @@ class HomeDasboardBody extends StatelessWidget {
                       ),
                       sliver: SliverList.list(
                         children: [
-                          Text("Nutrition",
+                          Text("Food Tracking",
                               style:
                                   p12_400BlackTextStyle.copyWith(fontSize: 16)),
                           const SizedBox(height: 16),
                           InkWell(
                             onTap: () {
-                              context.read<NavigationBloc>().add(
-                                  ScreenPushedEvent(
-                                      ScreenPaths.foodTrackScreenPath.name));
+                              asyncNavigationForTrackFood(context, selectedDate);
                             },
                             child: Container(
                               // height: 200,
@@ -221,7 +219,7 @@ class HomeDasboardBody extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            "Track food",
+                                            "Add food",
                                             style:
                                                 p8_500WhiteTextStyle.copyWith(
                                               fontWeight: FontWeight.w500,
@@ -552,7 +550,10 @@ class HomeDasboardBody extends StatelessWidget {
           fetchHomeData(context, selectedDate);
         });
   }
-
+void asyncNavigationForTrackFood(BuildContext context,DateTime selectedDate) async{
+  await Navigator.pushNamed(context, ScreenPaths.foodTrackScreenPath.name,arguments: selectedDate);
+  fetchHomeData(context, selectedDate);
+}
   void showTargetBottomSheet(
       HomeDashBoardResponse? homeData, BuildContext context) {
     Map targetData = homeData!.targetData!;

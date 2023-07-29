@@ -11,5 +11,6 @@ workoutSearchScreenPath,
 foodDetailScreenPath,
 workoutTrackScreenPath,
 workoutDetailScreenPath,
-editProfileScreenPath
+editProfileScreenPath,
+webViewScreen
 }

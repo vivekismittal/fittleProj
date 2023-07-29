@@ -11,6 +11,7 @@ import 'package:fittle_ai/screens/profile_completion/profile_completion_secreen.
 import 'package:fittle_ai/screens/splash/splash_screen.dart';
 import 'package:fittle_ai/resources/app_theme.dart';
 import 'package:fittle_ai/Utils/screen_paths.dart';
+import 'package:fittle_ai/screens/web_view_screen.dart';
 import 'package:fittle_ai/screens/workout/workout_search_screen.dart';
 import 'package:fittle_ai/screens/workout/workout_track_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp(debugShowCheckedModeBanner: false,
       title: 'Fittle.ai',
       theme: AppTheme().themeData,
       routes: {
@@ -73,7 +74,8 @@ class MyApp extends StatelessWidget {
         ScreenPaths.workoutDetailScreenPath.name: (context) =>
             const WorkoutDetailScreen(),
         ScreenPaths.editProfileScreenPath.name: (context) =>
-            const EditProfileScreen()
+            const EditProfileScreen(),
+        ScreenPaths.webViewScreen.name: (context) => WebViewScreen()
       },
     );
   }

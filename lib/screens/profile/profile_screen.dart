@@ -601,13 +601,18 @@ class ProfileBody extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                    Navigator.pushNamed(
+                                      context, ScreenPaths.webViewScreen.name,
+                                      arguments:
+                                          "https://www.fittle.ai/terms-and-conditions");
+                                },
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Help & Support",
+                                      "Terms & Conditions",
                                       style: p12_400GreyTextStyle,
                                     ),
                                     const Icon(
@@ -619,7 +624,12 @@ class ProfileBody extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, ScreenPaths.webViewScreen.name,
+                                      arguments:
+                                          "https://www.fittle.ai/privacy-policy");
+                                },
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -636,23 +646,7 @@ class ProfileBody extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 12),
-                              InkWell(
-                                onTap: () {},
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "About Us",
-                                      style: p12_400GreyTextStyle,
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_outward_sharp,
-                                      color: AppColor.gray_1,
-                                    )
-                                  ],
-                                ),
-                              )
+                              
                             ],
                           ),
                         ),

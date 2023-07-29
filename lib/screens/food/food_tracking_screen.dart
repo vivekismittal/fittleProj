@@ -19,19 +19,25 @@ class FoodTrackingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime selectedDate =
+        ModalRoute.of(context)!.settings.arguments as DateTime;
+
     return CustomScreenWithLoader(
       withGradient: false,
       body: BlocProvider(
-          create: (context) => FoodTrackBloc(), child: FoodTrackingBody()),
+          create: (context) => FoodTrackBloc(),
+          child: FoodTrackingBody(
+            selectedDate: selectedDate,
+          )),
       id: ScreenPaths.foodTrackScreenPath.name,
     );
   }
 }
 
 class FoodTrackingBody extends StatelessWidget {
-  FoodTrackingBody({super.key});
+  FoodTrackingBody({super.key, required this.selectedDate});
 
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
 
   int getCurrentTimeIndexForDayCard() {
     DateTime currentTime = DateTime.now();
@@ -131,7 +137,6 @@ class FoodTrackingBody extends StatelessWidget {
               }
               break;
           }
-
         },
         builder: (context, foodTrackState) {
           if (foodTrackState is! FoodTrackSuccessState) {
@@ -275,7 +280,7 @@ class FoodTrackingBody extends StatelessWidget {
                           foodTileData: foodTrackData!.userFoodData![index],
                           onQuantityChange: (foodTileData) {
                             foodTrackData?.userFoodData?[index] = foodTileData;
-                       
+
                             setState(() {
                               isSaveBtnActive = true;
                             });
@@ -309,8 +314,8 @@ class FoodTrackingBody extends StatelessWidget {
 
                                 foodTrackData?.userFoodData?.removeAt(index);
 
-                                foodTrackData?.userFoodData?.forEach((element) {
-                                });
+                                foodTrackData?.userFoodData
+                                    ?.forEach((element) {});
                                 context.read<FoodTrackBloc>().add(
                                       FoodTrackDataDeleteEvent(
                                         "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
