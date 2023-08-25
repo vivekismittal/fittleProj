@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Constant {
+  static const String accountDeactivate =
+      "https://www.fittle.ai/account-deactivation";
+
   ///svgs
   static const String splashSvg = "assets/svg/splash.svg";
   static const String whatsappSvg = "assets/svg/whatsApp.svg";
@@ -34,8 +37,6 @@ class Constant {
   static const String face3Png = "assets/png/face3.png";
   static const String face4Png = "assets/png/face4.png";
   static const String targetGoalJpg = "assets/png/targetGoal.jpg";
-
-
 
   ///lotties
   static const String loaderLottie = "assets/lotties/app-loader.json";

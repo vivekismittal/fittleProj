@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/navigation_bloc.dart';
 import '../../resources/components/texts/custom_text.dart';
 import '../../resources/components/toast.dart';
+import '../../utils/constants.dart';
 import '../../utils/singleton.dart';
 
 class ProfileBody extends StatelessWidget {
@@ -602,7 +603,7 @@ class ProfileBody extends StatelessWidget {
                               const SizedBox(height: 12),
                               InkWell(
                                 onTap: () {
-                                    Navigator.pushNamed(
+                                  Navigator.pushNamed(
                                       context, ScreenPaths.webViewScreen.name,
                                       arguments:
                                           "https://www.fittle.ai/terms-and-conditions");
@@ -646,55 +647,78 @@ class ProfileBody extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 12),
-                              
                             ],
                           ),
                         ),
                         const SizedBox(height: 14),
                         Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColor.whiteColor),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Action",
-                                  style: p14_500BlackTextStyle,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: AppColor.whiteColor),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Action",
+                                style: p14_500BlackTextStyle,
+                              ),
+                              const SizedBox(height: 12),
+                              InkWell(
+                                onTap: () {
+                                Navigator.pushNamed(
+                                      context, ScreenPaths.webViewScreen.name,
+                                      arguments:
+                                          Constant.accountDeactivate);
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Delete Account",
+                                      style: p12_400GreyTextStyle,
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: AppColor.gray_1,
+                                    )
+                                  ],
                                 ),
-                                const SizedBox(height: 12),
-                                InkWell(
-                                  onTap: () {
-                                    showLogoutPopUp(context, () {
-                                      Singleton().sharedRepo.clear();
-                                      context.read<NavigationBloc>().add(
-                                            ScreenPushedAndRemoveUntilEvent(
-                                                ScreenPaths
-                                                    .authLoginScreenPath.name,
-                                                "",
-                                                from: '/'),
-                                          );
-                                    });
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Logout",
-                                        style: p12_400GreyTextStyle,
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: AppColor.gray_1,
-                                      )
-                                    ],
-                                  ),
+                              ),
+                              const SizedBox(height: 12),
+                              InkWell(
+                                onTap: () {
+                                  showLogoutPopUp(context, () {
+                                    Singleton().sharedRepo.clear();
+                                    context.read<NavigationBloc>().add(
+                                          ScreenPushedAndRemoveUntilEvent(
+                                              ScreenPaths
+                                                  .authLoginScreenPath.name,
+                                              "",
+                                              from: '/'),
+                                        );
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Logout",
+                                      style: p12_400GreyTextStyle,
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: AppColor.gray_1,
+                                    )
+                                  ],
                                 ),
-                              ],
-                            )),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 22),
                       ],
                     );
